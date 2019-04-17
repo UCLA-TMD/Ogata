@@ -1,0 +1,9 @@
+Using the Code
+==============
+
+The repository contains a python 2.7 library named 'AdOg.py', a Fortran77 subroutine 'AgOg.f', as well as example files 'example.py' and 'example.f'. 
+
+AdOg Example for Python
+-----------------------
+
+After following the installation
