@@ -11,7 +11,7 @@ Ogata-TMD package for performing fast Hankel transforms for applications to TMDs
    :caption: Contents:
 
    Overview   
-   Installation
+   Usage
    Publication
    License
    Help

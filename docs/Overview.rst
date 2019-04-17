@@ -10,7 +10,7 @@ This repository contains two adaptive numerical algorithms which use the Ogata q
   W_\nu(q_\perp;\vec{\alpha}) = \int_0^{\infty} \frac{db_\perp}{2\pi} b_\perp^{\nu+1} \widetilde{W}(b_\perp,\vec{\alpha}) J_\nu(b_\perp q_\perp).
   \end{align}
 
-Where :math:`\vec{\alpha}` contains external kineamtic parameters and :math:`\widetilde{W}(b_\perp,\vec{\alpha})` is taken to be analytic close the the real axis. 
+Where :math:`\vec{\alpha}` contains external kineamtic parameters and :math:`\widetilde{W}(b_\perp,\vec{\alpha})` is taken to be analytic close the the real axis and have a single peak at :math:`b_\perp>0`. 
 
 We denote the first Ogata quadrature method the 'untransformed adaptive Ogata' (agogu) and the second the 'transformed adaptive Ogata' (agogt). The untransformed Ogata quadrature is given by
 
@@ -40,4 +40,4 @@ Here
   J_{\nu}(\pi \xi_{\nu k}) = 0\; .
   \end{align}
 
-and :math:`h` and :math:`N` are the optimized parameters. See directed publication for specific details.
+and :math:`h` and :math:`N` are the optimized parameters. See directed publication for further details.

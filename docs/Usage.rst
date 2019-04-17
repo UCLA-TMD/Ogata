@@ -79,5 +79,3 @@ Plot. ::
 .. image:: ./logos/example_plot_u.png
 .. image:: ./logos/example_plot_t.png
 
-Fortran Example
----------------

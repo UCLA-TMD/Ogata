@@ -17,11 +17,14 @@ from scipy.special import jv, jn_zeros, yv
 from scipy.optimize import fsolve,minimize_scalar
 
 class AdOg:
-  
+
     def __init__(self,nu):
+        """Sets maximum number of nodes to about 2^15."""
         self.maxN = 32769
+        """Imports zeros of the Bessel function."""
         self.jn_zeros0 = jn_zeros(nu,self.maxN)
 
+    """Transformed Ogata quadrature sum."""
     def ogatat(self,f,h,N,nu):
         N = int(N)
         zeros =  self.jn_zeros0[:N]
@@ -36,8 +39,9 @@ class AdOg:
         F=f(knots)
         psip[np.isnan(psip)]=1.0
         val=np.pi*np.sum(w*F*Jnu*psip)
-        return val#,np.pi*w*F*Jnu*psip
+        return val
 
+    """Untransformed Ogata quadrature sum."""
     def ogatau(self,f,h,N,nu):
         zeros=self.jn_zeros0[:N]
         xi=zeros/np.pi
@@ -49,23 +53,32 @@ class AdOg:
         val=h*np.sum(w*F)
         return val#,h*w*F
 
+    """Determines the untransformed hu by maximizing contribution to first node."""
     def get_hu(self,f,nu,q,Q):
         zero1 = self.jn_zeros0[0]
         h = lambda x: -abs(x*f(x/q))
+        """Use brent method to maximize."""
         hu = minimize_scalar(h, bracket=None, bounds=(Q,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1
         return hu
-    
+
+    """Determine transformed ht from untransformed hu."""
     def get_ht(self,hu,nu,N):
         zeroN = self.jn_zeros0[int(N-1)]
         ht = fsolve(lambda h: hu-np.pi*np.tanh(np.pi/2*np.sinh(h*zeroN/np.pi)),2*hu/np.pi/zeroN)[0]
         return ht
-    
-    def adogu(self,g,N,Q,nu,q):
+
+    """Adaptive untransformed Ogata."""
+    def adogu(self,g,q,N,Q=1.,nu=None):
+        if nu is None:
+          nu = self.nu
         hu = self.get_hu(g,nu,q,Q)
         f = lambda x: g(x/q)/q
         return self.ogatau(f,hu,N,nu)
-    
-    def adogt(self,g,N,Q,nu,q):
+
+    """Adaptive transformed Ogata."""
+    def adogt(self,g,q,N,Q=1.,nu=None):
+        if nu is None:
+          nu = self.nu
         hu = self.get_hu(g,nu,q,Q)
         ht = self.get_ht(hu,nu,N)
         f = lambda x: g(x/q)/q
