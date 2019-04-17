@@ -17,7 +17,7 @@ We denote the first Ogata quadrature method the 'untransformed adaptive Ogata' (
 .. math::
 
   \begin{align}
-  \int_0^{\infty} {db_\perp}{2\pi} b_\perp^{\nu+1} \widetilde{W}(b_\perp,\vec{\alpha}) J_\nu(b_\perp q_\perp) \approx \frac{h}{2\pi}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N}\omega_{\nu k}x_{\nu k}^{\nu+1} \widetilde{W}(\frac{b_\perp}{q_\perp},\vec{\alpha}) J_\nu(x_{\nu k}).
+  W_\nu(q_\perp;\vec{\alpha}) \approx \frac{h}{2\pi}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N}\omega_{\nu k}x_{\nu k}^{\nu+1} \widetilde{W}(\frac{b_\perp}{q_\perp},\vec{\alpha}) J_\nu(x_{\nu k}).
   \end{align} 
 
 The transformed quadrature sum is given by
@@ -25,7 +25,7 @@ The transformed quadrature sum is given by
 .. math::
 
   \begin{align}
-  \int_0^{\infty} {db_\perp}{2\pi} b_\perp^{\nu+1} \widetilde{W}(b_\perp,\vec{\alpha}) J_\nu(b_\perp q_\perp) \approx \frac{1}{2}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N} \omega_{\nu k} \psi'(x_{\nu k}) (\frac{\pi}{h}\psi(x_{\nu k}))^{\nu+1} \widetilde{W}(\frac{\pi}{h q_\perp}\psi(x_{\nu k}),\vec{\alpha}) J_\nu(\frac{\pi}{h}\psi(x_{\nu k}))
+  W_\nu(q_\perp;\vec{\alpha}) \approx \frac{1}{2}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N} \omega_{\nu k} \psi'(x_{\nu k}) (\frac{\pi}{h}\psi(x_{\nu k}))^{\nu+1} \widetilde{W}(\frac{\pi}{h q_\perp}\psi(x_{\nu k}),\vec{\alpha}) J_\nu(\frac{\pi}{h}\psi(x_{\nu k}))
   \end{align}
 
 Here 
