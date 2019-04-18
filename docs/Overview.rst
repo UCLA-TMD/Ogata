@@ -15,7 +15,7 @@ This repository contains two adaptive numerical algorithms, written in python 2.
 .. math::
 
   \begin{align}
-  W_\nu(q_\perp;\vec{\alpha}) \approx \frac{h}{2\pi}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N}\omega_{\nu k}x_{\nu k}^{\nu+1} \widetilde{W}(\frac{b_\perp}{q_\perp},\vec{\alpha}) J_\nu(x_{\nu k}).
+  W_\nu(q_\perp;\vec{\alpha}) \approx \frac{h}{2\pi}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N}\omega_{\nu k}x_{\nu k}^{\nu+1} \widetilde{W}(\frac{x_{\nu k}}{q_\perp},\vec{\alpha}) J_\nu(x_{\nu k}).
   \end{align} 
 
 The second algorithm uses equations 8 in the reference paper and is called the 'transformed adaptive Ogata' method (adogt). The transformed quadrature sum is given by
