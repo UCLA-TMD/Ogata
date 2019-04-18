@@ -4,7 +4,7 @@
 Ogata-TMD
 =========
 
-Ogata package for performing fast Fourier transforms for TMDs phenomenology.
+Ogata package for performing fast Fourier transforms of TMDs.
 
 .. toctree::
    :maxdepth: 2

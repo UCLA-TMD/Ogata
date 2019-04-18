@@ -8,7 +8,7 @@ Dependencies
 
 - Only Linux and OSX are supported.
 
-- Python version relies on Numpy and Scipy libraries. We recommend to install anaconda (python2) which 
+- Package relies on Numpy and Scipy libraries. We recommend to install anaconda (python2) which 
   comes will all the necessary libraries.
 
 Installation

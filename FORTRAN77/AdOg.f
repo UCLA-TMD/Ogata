@@ -1,6 +1,7 @@
 c-----------------------------------------------------------------------
 c Integrands for bessel functions
 c-----------------------------------------------------------------------
+      """Integrand for integral representation of J_0"""
       real(kind=8) function funb_og(theta,z)
       implicit none
       real*8, intent(in) :: theta
@@ -10,6 +11,7 @@ c-----------------------------------------------------------------------
       return
       end function
 
+      """Integrand for integral representation of J_0"""
       real(kind=8) function funb1_og(theta,z)
       implicit none
       real*8 z,theta
@@ -18,7 +20,7 @@ c-----------------------------------------------------------------------
       end function
       
 c-----------------------------------------------------------------------
-c Numerical gaussian quadrature
+c Numerical gaussian quadrature for Bessel functions
 c-----------------------------------------------------------------------
       real(kind=8) function qgauss_og(func,xi,xf,n,z)
       implicit none
@@ -120,7 +122,7 @@ c-----------------------------------------------------------------------
       end function
 
 c-----------------------------------------------------------------------
-c Inversions for nu=0,1
+c Transformed Ogata sums for nu=0,1
 c-----------------------------------------------------------------------
       subroutine ogataJ0(func,h,N,qT,z,res)
       implicit none
