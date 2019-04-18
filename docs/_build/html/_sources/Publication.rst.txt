@@ -1,6 +1,0 @@
-Publication
-------------
-
-| 1) *Efficient Fourier Transforms for Transverse Momentum Distributions*
-| **Zhong-bo Kang, Alexei Prokudin, Nobuo Sato, John Terry**
-| Put link to INSPIRE HERE  
