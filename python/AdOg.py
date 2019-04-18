@@ -21,10 +21,10 @@ class AdOg:
     def __init__(self,nu):
         """Sets maximum number of nodes to about 2^15."""
         self.maxN = 32769
-        """Imports zeros of the Bessel function."""
+        """Imports zeros of the Bessel function. Initializing this way speeds up calls"""
         self.jn_zeros0 = jn_zeros(nu,self.maxN)
 
-    """Transformed Ogata quadrature sum."""
+    """Transformed Ogata quadrature sum. Equation 8 in the reference."""
     def ogatat(self,f,h,N,nu):
         N = int(N)
         zeros =  self.jn_zeros0[:N]
@@ -41,7 +41,7 @@ class AdOg:
         val=np.pi*np.sum(w*F*Jnu*psip)
         return val
 
-    """Untransformed Ogata quadrature sum."""
+    """Untransformed Ogata quadrature sum. Equation 7 in the reference."""
     def ogatau(self,f,h,N,nu):
         zeros=self.jn_zeros0[:N]
         xi=zeros/np.pi
@@ -53,7 +53,7 @@ class AdOg:
         val=h*np.sum(w*F)
         return val#,h*w*F
 
-    """Determines the untransformed hu by maximizing contribution to first node."""
+    """Determines the untransformed hu by maximizing contribution to first node. Equation 11 in ref."""
     def get_hu(self,f,nu,q,Q):
         zero1 = self.jn_zeros0[0]
         h = lambda x: -abs(x*f(x/q))
@@ -61,7 +61,7 @@ class AdOg:
         hu = minimize_scalar(h, bracket=None, bounds=(Q,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1
         return hu
 
-    """Determine transformed ht from untransformed hu."""
+    """Determine transformed ht from untransformed hu. Equation 13 in ref."""
     def get_ht(self,hu,nu,N):
         zeroN = self.jn_zeros0[int(N-1)]
         ht = fsolve(lambda h: hu-np.pi*np.tanh(np.pi/2*np.sinh(h*zeroN/np.pi)),2*hu/np.pi/zeroN)[0]
