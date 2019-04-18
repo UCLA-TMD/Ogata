@@ -1,6 +1,6 @@
 # Ogata-TMD
 
-The documentation can be found at https://ogata.readthedocs.io/.
+The documentation can be found at https://ucla-tmd.github.io/Ogata/.
 
 ## Authors
 
