@@ -4,7 +4,7 @@
 Ogata-TMD
 =========
 
-Ogata-TMD package for performing fast Hankel transforms for applications to TMDs.
+Ogata package for performing fast Fourier transforms for TMDs phenomenology.
 
 .. toctree::
    :maxdepth: 2

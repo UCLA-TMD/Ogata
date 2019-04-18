@@ -1,25 +1,24 @@
 Usage
 =====
 
-The repository contains a python 2.7 library named 'AdOg.py', a Fortran77 subroutine 'AgOg.f', as well as example files 'example.py' and 'example.f'. Follow directions in example files for using the software.
+The repository contains a python 2.7 library named 'AdOg.py' as well as example files 'example.py'.
 
 Dependencies
 ------------
 
-- Only Linux and OSX is supported
+- Only Linux and OSX are supported.
 
 - Python version relies on Numpy and Scipy libraries. We recommend to install anaconda (python2) which 
-  comes will all the necessary libraries
+  comes will all the necessary libraries.
 
 Installation
 ------------
 
-Clone the codes from https://github.com/UCLA-TMD/Ogata
+Clone the codes from https://github.com/UCLA-TMD/Ogata.
 
-For Python add numerical integrator to PYTHONPATH by executing:
+Add the numerical package to the environmental variable PYTHONPATH by executing the following.
 
   PYTHONPATH=path2Ogata:$PYTHONPATH
-
 
 Python Example
 --------------
@@ -58,7 +57,7 @@ Gather data. ::
 
    exact = lambda qT: (1+qT**2)**(-1.5) #Known analytic Hankel transform
    wexact = [exact(_q) for _q in q]
-   wadog  = [adog.adogt(test,N,Q,nu,_q) for _q in q]
+   wadog  = [adog.adogt(test,_q,N,Q,nu) for _q in q]
    ratios = [wadog[i]/wexact[i] for i in range(len(q))]
 
 Plot. ::
@@ -77,7 +76,23 @@ Plot. ::
    py.show()
 
 .. image:: ./logos/example_plot_u.png
+
+Doing the same for adogt, we have ::
+
+   wadogt  = [adog.adogt(test,_q,N,Q,nu) for _q in q]
+   ratios = [wadogt[i]/wexact[i] for i in range(len(q))]
+   ax=py.subplot(121)
+   ax.plot(q,wexact,'-',label='exact')
+   ax.plot(q,wadogt,'-.',label='numerical')
+   ax.set_xlabel(r'$q_{\perp}\; \rm (GeV)$',fontsize=20)
+   ax.set_ylabel(r'$W(q_{\perp})$',fontsize=20)
+   ax.legend(fontsize=12)
+   ax=py.subplot(122)
+   ax.plot(q,ratios)
+   ax.set_xlabel(r'$q_{\perp}\; \rm (GeV)$',fontsize=20)
+   ax.set_ylabel('adogt/Exact',fontsize=20)
+   py.tight_layout()
+   py.show()
+
 .. image:: ./logos/example_plot_t.png
 
-Fortran Example
----------------

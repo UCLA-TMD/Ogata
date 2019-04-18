@@ -51,23 +51,23 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>This repository contains two adaptive numerical algorithms which use the Ogata quadrature method for applications to CSS TMD physics. The adaptive integration is optimized for integrals of the following form:</p>
+<p>This repository contains two adaptive numerical algorithms, written in python 2.7, which use the Ogata quadrature method for applications to CSS TMD physics. The adaptive integration is optimized for integrals of the following form:</p>
 <div class="math">
 \[\begin{align}
 W_\nu(q_\perp;\vec{\alpha}) = \int_0^{\infty} \frac{db_\perp}{2\pi} b_\perp^{\nu+1} \widetilde{W}(b_\perp,\vec{\alpha}) J_\nu(b_\perp q_\perp).
 \end{align}\]</div>
-<p>Where <span class="math">\(\vec{\alpha}\)</span> contains external kineamtic parameters and <span class="math">\(\widetilde{W}(b_\perp,\vec{\alpha})\)</span> is taken to be analytic close the the real axis and have a single peak at <span class="math">\(b_\perp&gt;0\)</span>.</p>
-<p>We denote the first Ogata quadrature method the ‘untransformed adaptive Ogata’ (agogu) and the second the ‘transformed adaptive Ogata’ (agogt). The untransformed Ogata quadrature is given by</p>
+<p><span class="math">\(\vec{\alpha}\)</span> contains the external parameters and <span class="math">\(\widetilde{W}(b_\perp,\vec{\alpha})\)</span> is taken to be analytic close the the real axis and have a single peak at <span class="math">\(b_\perp&gt;0\)</span>.</p>
+<p>The first algorithm uses equations 7 in the reference paper and is called the ‘untransformed adaptive Ogata’ method (adogu). The untransformed quadrature sum is given by</p>
 <div class="math">
 \[\begin{align}
 W_\nu(q_\perp;\vec{\alpha}) \approx \frac{h}{2\pi}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N}\omega_{\nu k}x_{\nu k}^{\nu+1} \widetilde{W}(\frac{b_\perp}{q_\perp},\vec{\alpha}) J_\nu(x_{\nu k}).
 \end{align}\]</div>
-<p>The transformed quadrature sum is given by</p>
+<p>The second algorithm uses equations 8 in the reference paper and is called the ‘transformed adaptive Ogata’ method (adogt). The transformed quadrature sum is given by</p>
 <div class="math">
 \[\begin{align}
 W_\nu(q_\perp;\vec{\alpha}) \approx \frac{1}{2}\frac{1}{q^{\nu+2}}\sum_{k = 1}^{N} \omega_{\nu k} \psi'(x_{\nu k}) (\frac{\pi}{h}\psi(x_{\nu k}))^{\nu+1} \widetilde{W}(\frac{\pi}{h q_\perp}\psi(x_{\nu k}),\vec{\alpha}) J_\nu(\frac{\pi}{h}\psi(x_{\nu k}))
 \end{align}\]</div>
-<p>Here</p>
+<p>The parameters <span class="math">\(h\)</span> is optimized for adogu and adogt using equations 11 and 13 in the reference, respectively, and <span class="math">\(\psi(x) = x\tanh\left[\frac{\pi}{2}\sinh(x)\right]\)</span>. Here</p>
 <div class="math">
 \[\begin{align}
 w_{\nu k} = \frac{2}{\pi^2 \xi_{\nu |k|}J_{\nu+1}(\pi\xi_{\nu |k|})}\;,
@@ -76,7 +76,7 @@ x_{\nu k} = h \xi_{\nu k}\; ,
 \qquad
 J_{\nu}(\pi \xi_{\nu k}) = 0\; .
 \end{align}\]</div>
-<p>and <span class="math">\(h\)</span> and <span class="math">\(N\)</span> are the optimized parameters. See directed publication for specific details.</p>
+<p>The integrator takes as an input the parameters <span class="math">\(\nu\)</span>, the order of the Bessel function, <span class="math">\(q_\perp\)</span>:, the transverse momentum, <span class="math">\(Q\)</span>, the estimated value of the reciprocal of the location of the peak of the function in <span class="math">\(b_\perp\)</span> space, and <span class="math">\(N\)</span>, the number of nodes. The function returns a single numerical value which gives an estimation of the desired integral.</p>
 </div>
 
 

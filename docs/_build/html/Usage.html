@@ -51,19 +51,19 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>The repository contains a python 2.7 library named ‘AdOg.py’, a Fortran77 subroutine ‘AgOg.f’, as well as example files ‘example.py’ and ‘example.f’. Follow directions in example files for using the software.</p>
+<p>The repository contains a python 2.7 library named ‘AdOg.py’ as well as example files ‘example.py’.</p>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Only Linux and OSX is supported</li>
+<li>Only Linux and OSX are supported.</li>
 <li>Python version relies on Numpy and Scipy libraries. We recommend to install anaconda (python2) which
-comes will all the necessary libraries</li>
+comes will all the necessary libraries.</li>
 </ul>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Clone the codes from <a class="reference external" href="https://github.com/UCLA-TMD/Ogata">https://github.com/UCLA-TMD/Ogata</a></p>
-<p>For Python add numerical integrator to PYTHONPATH by executing:</p>
+<p>Clone the codes from <a class="reference external" href="https://github.com/UCLA-TMD/Ogata">https://github.com/UCLA-TMD/Ogata</a>.</p>
+<p>Add the numerical package to the environmental variable PYTHONPATH by executing the following.</p>
 <blockquote>
 <div>PYTHONPATH=path2Ogata:$PYTHONPATH</div></blockquote>
 </div>
@@ -100,7 +100,7 @@ comes will all the necessary libraries</li>
 <p>Gather data.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">exact</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">qT</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">qT</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">)</span> <span class="c1">#Known analytic Hankel transform</span>
 <span class="n">wexact</span> <span class="o">=</span> <span class="p">[</span><span class="n">exact</span><span class="p">(</span><span class="n">_q</span><span class="p">)</span> <span class="k">for</span> <span class="n">_q</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
-<span class="n">wadog</span>  <span class="o">=</span> <span class="p">[</span><span class="n">adog</span><span class="o">.</span><span class="n">adogt</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">_q</span><span class="p">)</span> <span class="k">for</span> <span class="n">_q</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
+<span class="n">wadog</span>  <span class="o">=</span> <span class="p">[</span><span class="n">adog</span><span class="o">.</span><span class="n">adogt</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="n">_q</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">nu</span><span class="p">)</span> <span class="k">for</span> <span class="n">_q</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
 <span class="n">ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">wadog</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">wexact</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">))]</span>
 </pre></div>
 </div>
@@ -120,10 +120,24 @@ comes will all the necessary libraries</li>
 </pre></div>
 </div>
 <img alt="_images/example_plot_u.png" src="_images/example_plot_u.png" />
-<img alt="_images/example_plot_t.png" src="_images/example_plot_t.png" />
+<p>Doing the same for adogt, we have</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wadogt</span>  <span class="o">=</span> <span class="p">[</span><span class="n">adog</span><span class="o">.</span><span class="n">adogt</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="n">_q</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="n">Q</span><span class="p">,</span><span class="n">nu</span><span class="p">)</span> <span class="k">for</span> <span class="n">_q</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
+<span class="n">ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">wadogt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">wexact</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">))]</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">py</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">wexact</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">wadogt</span><span class="p">,</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;numerical&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$q_{\perp}\; \rm (GeV)$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$W(q_{\perp})$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">py</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">ratios</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$q_{\perp}\; \rm (GeV)$&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;adogt/Exact&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">py</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">py</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
 </div>
-<div class="section" id="fortran-example">
-<h2>Fortran Example<a class="headerlink" href="#fortran-example" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/example_plot_t.png" src="_images/example_plot_t.png" />
 </div>
 </div>
 

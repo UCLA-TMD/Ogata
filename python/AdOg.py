@@ -68,7 +68,7 @@ class AdOg:
         return ht
 
     """Adaptive untransformed Ogata."""
-    def adogu(self,g,q,N,Q=1.,nu=None):
+    def adogu(self,g,q,N,Q=10.,nu=None):
         if nu is None:
           nu = self.nu
         hu = self.get_hu(g,nu,q,Q)
@@ -76,7 +76,7 @@ class AdOg:
         return self.ogatau(f,hu,N,nu)
 
     """Adaptive transformed Ogata."""
-    def adogt(self,g,q,N,Q=1.,nu=None):
+    def adogt(self,g,q,N,Q=10.,nu=None):
         if nu is None:
           nu = self.nu
         hu = self.get_hu(g,nu,q,Q)

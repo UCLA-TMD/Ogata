@@ -18,7 +18,7 @@ adog = AdOg(nu)
 
 exact = lambda qT: (1+qT**2)**(-1.5)
 wexact = [exact(_q) for _q in q]
-wadog  = [adog.adogu(test,N,Q,nu,_q) for _q in q]
+wadog  = [adog.adogu(test,_q,N,Q,nu) for _q in q]
 ratios = [wadog[i]/wexact[i] for i in range(len(q))]
 
 ax=py.subplot(121)
@@ -34,9 +34,8 @@ ax.set_ylabel('adogu/Exact',fontsize=20)
 py.tight_layout()
 py.show()
 
-wadogt  = [adog.adogt(test,N,Q,nu,_q) for _q in q]
+wadogt  = [adog.adogt(test,_q,N,Q,nu) for _q in q]
 ratios = [wadogt[i]/wexact[i] for i in range(len(q))]
-
 ax=py.subplot(121)
 ax.plot(q,wexact,'-',label='exact')
 ax.plot(q,wadogt,'-.',label='numerical')
