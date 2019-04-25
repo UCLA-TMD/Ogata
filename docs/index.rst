@@ -1,10 +1,10 @@
 .. Ogata-TMD documentation master file, created by
    sphinx-quickstart on Tue Apr 16 14:17:54 2019.
 
-Ogata-TMD
-=========
+Fast Bessel Transform (FBT)
+===========================
 
-Ogata package for performing fast Fourier transforms of TMDs.
+Package for performing fast Bessel transforms of TMDs using Ogata quadrature.
 
 .. toctree::
    :maxdepth: 2

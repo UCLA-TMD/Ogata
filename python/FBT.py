@@ -2,10 +2,9 @@
 
 ###############################################################################
 #                                                                             #
-#                Adaptive Ogata (AdOg) for TMDs                               #
+#                Fast Bessel Transform (FBT) for TMDs                         #
 #     Zhongbo Kang, Alexei Prokudin, Nobuo Sato, John Terry                   #
 #                   Please cite ArXiv.........                                #
-#   Untransformed Ogata (adogu) and transformed (Ogata adogt)                 #
 #                      h is spacing parameter                                 #
 #                  N is number of function calls                              #
 #                  nu is Bessel function order                                #
@@ -16,7 +15,7 @@ import numpy as np
 from scipy.special import jv, jn_zeros, yv
 from scipy.optimize import fsolve,minimize_scalar
 
-class AdOg:
+class FBT:
 
     def __init__(self,nu):
         """Sets maximum number of nodes to about 2^15."""
@@ -67,16 +66,16 @@ class AdOg:
         ht = fsolve(lambda h: hu-np.pi*np.tanh(np.pi/2*np.sinh(h*zeroN/np.pi)),2*hu/np.pi/zeroN)[0]
         return ht
 
-    """Adaptive untransformed Ogata."""
-    def adogu(self,g,q,N,Q=10.,nu=None):
+    """Untransformed optimized Ogata."""
+    def fbtu(self,g,q,N,Q=10.,nu=None):
         if nu is None:
           nu = self.nu
         hu = self.get_hu(g,nu,q,Q)
         f = lambda x: g(x/q)/q
         return self.ogatau(f,hu,N,nu)
 
-    """Adaptive transformed Ogata."""
-    def adogt(self,g,q,N,Q=10.,nu=None):
+    """Transformed optimized Ogata."""
+    def fbt(self,g,q,N,Q=10.,nu=None):
         if nu is None:
           nu = self.nu
         hu = self.get_hu(g,nu,q,Q)
