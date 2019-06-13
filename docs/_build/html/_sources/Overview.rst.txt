@@ -1,7 +1,7 @@
 Overview
 ========
 
-This repository contains two adaptive numerical algorithms, written in python 2.7, which use the Ogata quadrature method for applications to CSS TMD physics. The adaptive integration is optimized for integrals of the following form
+This repository contains the optimized Ogata quadrature numerical algorithm, available in both python 2.7 and Fortran 77. This algorithm uses the Ogata quadrature method for applications to CSS TMD physics. The integration optimizes integrals of the following form
 
 
 .. math::
@@ -10,15 +10,7 @@ This repository contains two adaptive numerical algorithms, written in python 2.
   W_\nu(q_\perp) = \int_0^{\infty} \frac{db_\perp}{2\pi} b_\perp^{\nu+1} \widetilde{W}(b_\perp) J_\nu(b_\perp q_\perp).
   \end{align}
 
-Here  :math:`\widetilde{W}(b_\perp)` is taken to be analytic close the the real axis and have a single peak at :math:`b_\perp>0`. The first algorithm uses equations 7 in the reference paper and is called the 'untransformed adaptive Ogata' method (adogu). The untransformed quadrature sum is given by
-
-.. math::
-
-  \begin{align}
-  W_\nu(q_\perp) \approx \frac{h}{2\pi q_\perp}\sum_{k = 1}^{N}\omega_{\nu k}(\frac{x_{\nu k}}{q_\perp})^{\nu+1} \widetilde{W}(\frac{x_{\nu k}}{q_\perp}) J_\nu(x_{\nu k}).
-  \end{align} 
-
-The second algorithm uses equations 8 in the reference paper and is called the 'transformed adaptive Ogata' method (adogt). The transformed quadrature sum is given by
+Here  :math:`\widetilde{W}(b_\perp)` is a function which is taken be  analytic close the the real axis and have a single peak at :math:`b_\perp>0`. The algorithm uses equations 15 in the reference paper and is called the 'optimized Ogata' method. The quadrature sum is given by
 
 .. math::
 
@@ -26,7 +18,7 @@ The second algorithm uses equations 8 in the reference paper and is called the '
   W_\nu(q_\perp) \approx \frac{1}{2q_\perp}\sum_{k = 1}^{N} \omega_{\nu k} \psi'(x_{\nu k}) (\frac{\pi}{h q_\perp}\psi(x_{\nu k}))^{\nu+1} \widetilde{W}(\frac{\pi}{h q_\perp}\psi(x_{\nu k})) J_\nu(\frac{\pi}{h}\psi(x_{\nu k}))
   \end{align}
 
-The parameters :math:`h` is optimized for adogu and adogt using equations 11 and 13 in the reference, respectively, and :math:`\psi(x) = x\tanh\left[\frac{\pi}{2}\sinh(x)\right]`. Here
+The parameters :math:`h` is optimized using equations (19) and (21) in the reference. Furthermore :math:`\psi(x) = x\tanh\left[\frac{\pi}{2}\sinh(x)\right]`. Here
 
 .. math::
 

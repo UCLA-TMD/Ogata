@@ -1,7 +1,6 @@
 c-----------------------------------------------------------------------
 c Integrands for bessel functions
 c-----------------------------------------------------------------------
-      """Integrand for integral representation of J_0"""
       real(kind=8) function funb_og(theta,z)
       implicit none
       real*8, intent(in) :: theta
@@ -11,7 +10,6 @@ c-----------------------------------------------------------------------
       return
       end function
 
-      """Integrand for integral representation of J_0"""
       real(kind=8) function funb1_og(theta,z)
       implicit none
       real*8 z,theta
@@ -20,7 +18,7 @@ c-----------------------------------------------------------------------
       end function
       
 c-----------------------------------------------------------------------
-c Numerical gaussian quadrature for Bessel functions
+c Numerical gaussian quadrature
 c-----------------------------------------------------------------------
       real(kind=8) function qgauss_og(func,xi,xf,n,z)
       implicit none
@@ -122,7 +120,7 @@ c-----------------------------------------------------------------------
       end function
 
 c-----------------------------------------------------------------------
-c Transformed Ogata sums for nu=0,1
+c Inversions for nu=0,1
 c-----------------------------------------------------------------------
       subroutine ogataJ0(func,h,N,qT,z,res)
       implicit none
@@ -382,7 +380,7 @@ c	Ogata weights for J1: w_k= Y1(J1zeros(k))/J2(J1zeros(k))
 c-----------------------------------------------------------------------
 c New Adaptive Ogata 1/{2\pi}\int_0^{\infty} db b J_{\nu}(qT b) func(b)
 c----------------------------------------------------------------------
-      subroutine adogt(func,qT,Q,nu,z,res)
+      subroutine fbt(func,qT,Q,nu,z,res)
       implicit none
       real*8, intent(in) :: qT,Q,z
       integer, intent(in) :: nu
@@ -391,7 +389,7 @@ c----------------------------------------------------------------------
       real(kind=8), intent(out) :: res
       real*8, external :: get_ht
 
-      n=24d0
+      n=20d0
       h=get_ht(func,nu,int(n),qT,Q)
       if (nu.eq.0) then
         call ogataJ0(func,h,n,qT,z,res)
@@ -880,6 +878,26 @@ c-----------------------------------------------------------------------
      >    (dcosh(pi/2d0*dsinh(ht*J0/pi)))**(-2d0)
 
       end
+      
+cccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c   Auxiliary functions for ogata integration
+cccccccccccccccccccccccccccccccccccccccccccccccccccccc
+      function psi(t)
+      real*8 t,psi
+        psi=t*tanh(1.5707963267948966d0*sinh(t))
+      end function
+
+      function psip(t)
+      real*8::psip,t,argum
+        if(t>4d0) then ! Psi'(t) is basically 1 for t>4 or even less
+           psip=1d0
+        else    ! For smaller values we proeprly define it
+           argum=3.141592653589793d0*sinh(t)
+           psip=(3.141592653589793d0*t*cosh(t)+sinh(argum))
+     >          /(1d0+cosh(argum))
+        end if
+      end function
+cccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 
 

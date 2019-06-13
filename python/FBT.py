@@ -18,6 +18,7 @@ from scipy.optimize import fsolve,minimize_scalar
 class FBT:
 
     def __init__(self,nu):
+        self.nu = nu
         """Sets maximum number of nodes to about 2^15."""
         self.maxN = 32769
         """Imports zeros of the Bessel function. Initializing this way speeds up calls"""
@@ -82,5 +83,10 @@ class FBT:
         ht = self.get_ht(hu,nu,N)
         f = lambda x: g(x/q)/q
         return self.ogatat(f,ht,N,nu)
+
+if __name__ == "__main__":
+    f = lambda x: x*np.exp(-x)
+    fbt = FBT(0)
+    print fbt.fbt(f,1.,10,1)
 
 
