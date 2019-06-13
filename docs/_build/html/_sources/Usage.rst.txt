@@ -1,7 +1,7 @@
 Usage
 =====
 
-The repository contains a python 2.7 library named 'FBT.py' as well as example files 'example.py' as well as a Fortran 77 'FBT.f' and 'example.f' files. 
+The repository contains a python 2.7 library named 'FBT.py' as well as example files 'example.py'. Fortran source, example and Make files, 'FBT.f', 'example.f' and Makefile, are included as well. 
 
 Dependencies
 ------------
