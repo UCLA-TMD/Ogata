@@ -28,7 +28,7 @@ Authors
 
 - John Terry (UCLA)
 - Zhongbo Kang (UCLA)
-- Nobuo Sato (UConn) 
+- Nobuo Sato (ODU) 
 - Alexei Prokudin (PSU) 
 
 .. image:: ./logos/NSF.png
