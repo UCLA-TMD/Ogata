@@ -6,7 +6,7 @@ The documentation can be found at https://ucla-tmd.github.io/Ogata/.
 
 Zhong-bo Kang (UCLA)
 
-Nobuo Sato (UConn)
+Nobuo Sato (ODU)
 
 Alexei Prokudin (PSU)
 
