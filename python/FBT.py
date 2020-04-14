@@ -4,7 +4,7 @@
 #                                                                             #
 #                Fast Bessel Transform (FBT) for TMDs                         #
 #     Zhongbo Kang, Alexei Prokudin, Nobuo Sato, John Terry                   #
-#                   Please cite ArXiv.........                                #
+#                   Please cite ArXiv:1906.05949                              #
 #                      h is spacing parameter                                 #
 #                  N is number of function calls                              #
 #                  nu is Bessel function order                                #
@@ -59,6 +59,9 @@ class FBT:
         h = lambda x: -abs(x*f(x/q))
         """Use brent method to maximize."""
         hu = minimize_scalar(h, bracket=None, bounds=(Q,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1
+        if hu>3.:
+            hu = 3.
+            print 'Warning: Number of nodes is too small.'
         return hu
 
     """Determine transformed ht from untransformed hu. Equation 13 in ref."""

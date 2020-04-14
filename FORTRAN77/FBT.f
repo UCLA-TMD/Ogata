@@ -515,8 +515,9 @@ c-----------------------------------------------------------------------
             J0=J1zeros(n)
       endif
       hu = get_hu(f,qT,Q,nu)
-      if (hu.gt.3.14d0) then
-          hu = 3.14d0
+      if (hu.gt.3d0) then
+          hu = 3d0
+          write(6,*) 'Warning: Number of nodes is too small.'
       endif
       ht0=2d0*hu/(J0**2d0)
       dum=1.0d0
