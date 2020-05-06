@@ -1,6 +1,6 @@
 CPP = g++
 
-OPT = -c -g -O3 -arch x86_64 -m64 -Wall -std=c++11
+OPT = -c -O3 -arch x86_64 -m64 -Wall -std=c++11
 
 OBJECTS_FTB = FTB.o
 
