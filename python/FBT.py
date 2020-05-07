@@ -72,17 +72,15 @@ class FBT:
         return ht
 
     """Untransformed optimized Ogata."""
-    def fbtu(self,g,q,N,Q=10.,nu=None):
-        if nu is None:
-          nu = self.nu
+    def fbtu(self,g,q,N,Q=10.):
+        nu = self.nu
         hu = self.get_hu(g,nu,q,Q)
         f = lambda x: g(x/q)/q
         return self.ogatau(f,hu,N,nu)
 
     """Transformed optimized Ogata."""
-    def fbt(self,g,q,N,Q=10.,nu=None):
-        if nu is None:
-          nu = self.nu
+    def fbt(self,g,q,N,Q=10.):
+        nu = self.nu
         hu = self.get_hu(g,nu,q,Q)
         ht = self.get_ht(hu,nu,N)
         f = lambda x: g(x/q)/q
