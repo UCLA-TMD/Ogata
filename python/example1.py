@@ -25,16 +25,16 @@ wexact = exact(q)
 wfbt  = fbt.fbt(test,q,N,Q)
 wfbtu  = fbt.fbtu(test,q,N,Q)
 
-print " b*np.exp(-b) :"
-print "Exact=", wexact
-print "Fbt=", wfbt
-print "Fbtu=", wfbtu
+print (" b*np.exp(-b) :")
+print ("Exact=", wexact)
+print ("Fbt=", wfbt)
+print ("Fbtu=", wfbtu)
 
 wexact1 = exact1(q)
 wfbt1  = fbt.fbt(test1,q,N,Q)
 wfbtu1  = fbt.fbtu(test1,q,N,Q)
 
-print " b*np.exp(-b**2) :"
-print "Exact=", wexact1
-print "Fbt=", wfbt1
-print "Fbtu=", wfbtu1
+print (" b*np.exp(-b**2) :")
+print ("Exact=", wexact1)
+print ("Fbt=", wfbt1)
+print ("Fbtu=", wfbtu1)

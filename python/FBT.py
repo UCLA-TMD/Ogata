@@ -89,4 +89,4 @@ class FBT:
 if __name__ == "__main__":
     f = lambda x: x*np.exp(-x)
     fbt = FBT(0)
-    print fbt.fbt(f,1.,20,1.)
+    print (fbt.fbt(f,1.,20,1.))
