@@ -13,7 +13,7 @@ private:
   int N;     // N is number of function calls
   double Q;  // a rough estimate where the function x*f(x) has maximum x = Q
   constexpr static double nu_def = 0.0;
-  const static int N_def = 50;
+  const static int N_def = 10;
   constexpr static double Q_def = 1.; // a rough estimate where the maximum of the function f(x) is
   std::vector<double> jn_zeros0;
   void acknowledgement();
@@ -26,9 +26,8 @@ public:
   FBT(double _nu = nu_def, int _N = N_def, double _Q = Q_def); // Constructor
   ~FBT(); // Deconstructor
 
-  double fbtu(double (*g)(double), double q); // unmodified Ogata
+  double fbtu(double (*g)(double), double q); // unmodified original Ogata
   double fbt(double (*g)(double), double q);  // modified Ogata
-
 
 };
 

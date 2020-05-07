@@ -8,19 +8,33 @@ rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text',usetex=True)
 
 test = lambda b: b*np.exp(-b)
+exact = lambda qT: (1+qT**2)**(-1.5)
+
+test1 = lambda b:   b*np.exp(-b**2)
+exact1 = lambda qT: np.exp(-qT**2/4.)/2.
 
 N=10
-Q=1.0 # inverse of where test(b) peaks in bt space
-q=0.1
+Q=10.0 # inverse of where test(b) peaks in bt space
+q=1.
 nu=0.0
 
 
 fbt = FBT(nu)
 
-exact = lambda qT: (1+qT**2)**(-1.5)
 wexact = exact(q)
 wfbt  = fbt.fbt(test,q,N,Q,nu)
-ratios = wfbt/wexact
+wfbtu  = fbt.fbtu(test,q,N,Q,nu)
 
+print " b*np.exp(-b) :"
 print "Exact=", wexact
 print "Fbt=", wfbt
+print "Fbtu=", wfbtu
+
+wexact1 = exact1(q)
+wfbt1  = fbt.fbt(test1,q,N,Q,nu)
+wfbtu1  = fbt.fbtu(test1,q,N,Q,nu)
+
+print " b*np.exp(-b**2) :"
+print "Exact=", wexact1
+print "Fbt=", wfbt1
+print "Fbtu=", wfbtu1

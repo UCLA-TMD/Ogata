@@ -14,7 +14,6 @@
 #include <iostream>
 #include "FBT.h"
 
-
 //acknowledgement
 void FBT::acknowledgement(){
     std::cout << "###############################################################################" << std::endl;
@@ -28,14 +27,10 @@ void FBT::acknowledgement(){
     std::cout << "###############################################################################" << std::endl;
 };
 
-
-
-
 // Deconstructor
 FBT::~FBT(){
   //jn_zeros0.~vector<double>();
 };
-
 
 // Constructor
 FBT::FBT(double _nu, int _N, double _Q){
@@ -93,7 +88,6 @@ double get_psip( double t){
 double f_for_ogata(double x, double (*g)(double), double q){
   return g(x/q)/q;
 };
-
 
 //Transformed Ogata quadrature sum. Equation ? in the reference.
 double FBT::ogatat(double (*f)(double), double q, double h){
@@ -159,7 +153,6 @@ double FBT::ogatat(double (*f)(double), double q, double h){
 
   return val;
 };
-
 
 //"""Untransformed Ogata quadrature sum. Equation ? in the reference."""
 double FBT::ogatau(double (*f)(double), double q, double h){
@@ -227,7 +220,6 @@ double FBT::get_hu(double (*f)(double), double q){
   return hu;
 };
 
-
 double f_for_get_ht(double x, double hu, double zeroN){
   return hu-M_PI*tanh(M_PI/2.*sinh(x*zeroN/M_PI));
 };
@@ -238,41 +230,10 @@ double FBT::get_ht(double hu){
 
   double zeroN = double(jn_zeros0[N-1]);
 
-  //ht = fsolve(lambda h: hu-np.pi*np.tanh(np.pi/2*np.sinh(h*zeroN/np.pi)),2*hu/np.pi/zeroN)[0]
-  // double guess = 2.*hu/M_PI/zeroN;              // Rough guess is to divide the exponent by three.
-  // double factor = 3.;                                 // How big steps to take when searching.
-  //
-  // const boost::uintmax_t maxit = 100;            // Limit to maximum iterations.
-  // boost::uintmax_t it = maxit;                  // Initally our chosen max iterations, but updated with actual.
-  // bool is_rising = true;                        // So if result if guess^3 is too low, then try increasing guess.
-  // int digits = std::numeric_limits<double>::digits;  // Maximum possible binary digits accuracy for type T.
-  //   // Some fraction of digits is used to control how accurate to try to make the result.
-  // int get_digits = digits - 3;                  // We have to have a non-zero interval at each step, so
-  //                                                 // maximum accuracy is digits - 1.  But we also have to
-  //                                                 // allow for inaccuracy in f(x), otherwise the last few
-  //                                                 // iterations just thrash around.
-  // boost::math::tools::eps_tolerance<double> tol(get_digits);             // Set the tolerance.
-  //
-  //
-  // try
-  // {
-  //   std::pair<double, double> r = boost::math::tools::bracket_and_solve_root(std::bind(f_for_get_ht, std::placeholders::_1, hu, zeroN), guess, factor, is_rising, tol, it);
-  //   std::cout << "x is = " << r.first
-  //   << ", f(" << r.first << ") = " << r.second << std::endl;
-  //   double ht = r.first;
-  //   return ht;
-  // }
-  // catch (std::exception& ex)
-  // {
-  //   std::cout << "Thrown exception " << ex.what() << std::endl;
-  // }
-
-  return 1./M_PI/zeroN*asinh(2./M_PI*atanh(hu/M_PI));
+  return M_PI/zeroN*asinh(2./M_PI*atanh(hu/M_PI));
 
 
 };
-
-
 
 //"""Untransformed optimized Ogata."""
 double FBT::fbtu(double (*g)(double), double q){
@@ -280,16 +241,9 @@ double FBT::fbtu(double (*g)(double), double q){
   return ogatau(g,q,hu);
 };
 
-
-
-
 //"""Transformed optimized Ogata."""
 double FBT::fbt(double (*g)(double), double q){
   double hu = get_hu(g,q);
-  //std::cout << "hu= " << hu << std::endl;
-  //ht = self.get_ht(hu,nu,N)
   double ht = get_ht(hu);
-  //std::cout << "ht= " << ht << std::endl;
-  //ht = 0.017708098719671984;
   return ogatat(g,q,ht);
 };
