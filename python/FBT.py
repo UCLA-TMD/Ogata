@@ -61,7 +61,7 @@ class FBT:
         hu = minimize_scalar(h, bracket=None, bounds=(Q/10,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1
         if hu>3.:
             hu = 3.
-            print 'Warning: Number of nodes is too small.'
+            print ('Warning: Number of nodes is too small.')
         return hu
 
     """Determine transformed ht from untransformed hu. Equation 13 in ref."""

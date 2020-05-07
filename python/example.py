@@ -18,7 +18,7 @@ fbt = FBT(nu)
 
 exact = lambda qT: (1+qT**2)**(-1.5)
 wexact = [exact(_q) for _q in q]
-wfbt  = [fbt.fbt(test,_q,N,Q,nu) for _q in q]
+wfbt  = [fbt.fbt(test,_q,N,Q) for _q in q]
 ratios = [wfbt[i]/wexact[i] for i in range(len(q))]
 
 ax=py.subplot(121)
@@ -33,4 +33,3 @@ ax.set_xlabel(r'$q_{\perp}\; \rm (GeV)$',fontsize=20)
 ax.set_ylabel(r'\rm fbt/Exact',fontsize=20)
 py.tight_layout()
 py.show()
-
