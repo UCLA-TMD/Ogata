@@ -214,7 +214,7 @@ double FBT::get_hu(double (*f)(double), double q){
   double hu = r.first/zero1;
   if(hu >= 3.){
     hu = 3.;
-    std::cerr<< "Warning: Number of nodes is too small " << this->N << std::endl;
+    std::cerr<< "Warning: Number of nodes is too small N = " << this->N << std::endl;
   }
 
   return hu;
