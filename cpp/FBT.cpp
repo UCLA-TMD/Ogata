@@ -85,12 +85,12 @@ double get_psip( double t){
 };
 
 
-double f_for_ogata(double x, double (*g)(double), double q){
-  return g(x/q)/q;
+double f_for_ogata(double x, double (*g)(double,void*), void* data, double q){
+  return g(x/q,data)/q;
 };
 
 //Transformed Ogata quadrature sum. Equation ? in the reference.
-double FBT::ogatat(double (*f)(double), double q, double h){
+double FBT::ogatat(double (*f)(double,void*), void* data, double q, double h){
   double nu = this->nu;
   int N = this->N;
 
@@ -140,7 +140,7 @@ double FBT::ogatat(double (*f)(double), double q, double h){
       {
         psip[i] = temp;
       };
-      F[i] = f_for_ogata(knots[i], f, q);
+      F[i] = f_for_ogata(knots[i], f, data, q);
       val += M_PI*w[i]*F[i]*Jnu[i]*psip[i];
 
 
@@ -155,7 +155,7 @@ double FBT::ogatat(double (*f)(double), double q, double h){
 };
 
 //"""Untransformed Ogata quadrature sum. Equation ? in the reference."""
-double FBT::ogatau(double (*f)(double), double q, double h){
+double FBT::ogatau(double (*f)(double,void*), void* data, double q, double h){
   double nu = this->nu;
   int N = this->N;
 
@@ -187,7 +187,7 @@ double FBT::ogatau(double (*f)(double), double q, double h){
       Jp1[i]=boost::math::cyl_bessel_j(nu+1,M_PI*xi[i]);
       w[i]=boost::math::cyl_neumann(nu,M_PI*xi[i])/Jp1[i];
       knots[i] = xi[i]*h;
-      F[i]=f_for_ogata(knots[i], f, q)*boost::math::cyl_bessel_j(nu,knots[i]);
+      F[i]=f_for_ogata(knots[i], f, data, q)*boost::math::cyl_bessel_j(nu,knots[i]);
       val+=h*w[i]*F[i];
     }
   }
@@ -199,17 +199,17 @@ double FBT::ogatau(double (*f)(double), double q, double h){
   return val;
 };
 
-double f_for_get_hu(double x, double (*g)(double), double q){
-   return -abs(x*g(x/q));
+double f_for_get_hu(double x, double (*g)(double,void*), void* data, double q){
+   return -abs(x*g(x/q, data));
 };
 
 //"""Determines the untransformed hu by maximizing contribution to first node. Equation ? in ref."""
-double FBT::get_hu(double (*f)(double), double q){
+double FBT::get_hu(double (*f)(double,void*), void* data, double q){
   double Q = this->Q;
 
   double zero1 = jn_zeros0[0];
   const int double_bits = std::numeric_limits<double>::digits;
-  std::pair<double, double> r = boost::math::tools::brent_find_minima(std::bind(f_for_get_hu, std::placeholders::_1, f, q), Q/10., 10.*Q, double_bits);
+  std::pair<double, double> r = boost::math::tools::brent_find_minima(std::bind(f_for_get_hu, std::placeholders::_1, f, data, q), Q/10., 10.*Q, double_bits);
 
   double hu = r.first/zero1;
   if(hu >= 3.){
@@ -220,9 +220,9 @@ double FBT::get_hu(double (*f)(double), double q){
   return hu;
 };
 
-double f_for_get_ht(double x, double hu, double zeroN){
-  return hu-M_PI*tanh(M_PI/2.*sinh(x*zeroN/M_PI));
-};
+// double f_for_get_ht(double x, double hu, double zeroN){
+//   return hu-M_PI*tanh(M_PI/2.*sinh(x*zeroN/M_PI));
+// };
 
 //"""Determine transformed ht from untransformed hu. Equation ? in ref."""
 double FBT::get_ht(double hu){
@@ -236,14 +236,34 @@ double FBT::get_ht(double hu){
 };
 
 //"""Untransformed optimized Ogata."""
-double FBT::fbtu(double (*g)(double), double q){
-  double hu = get_hu(g,q);
-  return ogatau(g,q,hu);
+double FBT::fbtu(double (*g)(double,void*), void* data, double q){
+  /* Numerical computation of F(q)=int(f(x)*Jn(x*q)) Bessel transform
+		[in]g     - integrand
+		[in]data  - pointer on user-defined data which will
+		[in]data  - pointer on user-defined data which will
+					be passed to g every time it called (as third parameter).
+		[in]q - evaluation point
+
+	return:
+			-computed integral value
+	*/
+  double hu = get_hu(g,data,q);
+  return ogatau(g,data,q,hu);
 };
 
 //"""Transformed optimized Ogata."""
-double FBT::fbt(double (*g)(double), double q){
-  double hu = get_hu(g,q);
+double FBT::fbt(double (*g)(double,void*), void* data, double q){
+  /* Numerical computation of F(q)=int(f(x)*Jn(x*q)) Bessel transform
+		[in]g     - integrand
+		[in]data  - pointer on user-defined data which will
+		[in]data  - pointer on user-defined data which will
+					be passed to g every time it called (as third parameter).
+		[in]q - evaluation point
+
+	return:
+			-computed integral value
+	*/
+  double hu = get_hu(g,data,q);
   double ht = get_ht(hu);
-  return ogatat(g,q,ht);
+  return ogatat(g,data,q,ht);
 };

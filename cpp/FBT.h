@@ -17,17 +17,17 @@ private:
   constexpr static double Q_def = 1.; // a rough estimate where the maximum of the function f(x) is
   std::vector<double> jn_zeros0;
   void acknowledgement();
-  double ogatat(double (*f)(double), double q, double h);
-  double ogatau(double (*f)(double), double q, double h);
-  double get_hu(double (*f)(double), double q);
+  double ogatat(double (*f)(double,void*), void* data, double q, double h);
+  double ogatau(double (*f)(double,void*), void* data, double q, double h);
+  double get_hu(double (*f)(double,void*), void* data, double q);
   double get_ht(double hu);
 
 public:
   FBT(double _nu = nu_def, int _N = N_def, double _Q = Q_def); // Constructor
   ~FBT(); // Deconstructor
 
-  double fbtu(double (*g)(double), double q); // unmodified original Ogata
-  double fbt(double (*g)(double), double q);  // modified Ogata
+  double fbtu(double (*g)(double,void*), void* data, double q); // unmodified original Ogata
+  double fbt(double (*g)(double,void*), void* data, double q);  // modified Ogata
 
 };
 

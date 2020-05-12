@@ -6,20 +6,21 @@
 #include "FBT.h"
 
 
-double test( double x ){ return x*exp(-x);} // test function to transform
-double exact( double qT ){ return pow((1.+qT*qT),-1.5);} // test function exact
+double test( double x, void* data ){ return x*exp(-x);} // test function to transform data allows to send anything else to the function
+double exact( double qT){ return pow((1.+qT*qT),-1.5);} // test function exact
 
 
-double test1( double x ){ return x*exp(-x*x);} // test function to transform
+double test1( double x, void* data ){ return x*exp(-x*x);} // test function to transform
 double exact1( double qT ){ return exp(-qT*qT/4.)/2.;} // test function exact
 
 int main( void )
 {
   FBT ogata = FBT(); // Fourier Transform with Jnu, nu=0.0 and N=10
   double qT = 1.;
+  double data = 1;
 
   auto begin = std::chrono::high_resolution_clock::now();
-  double res = ogata.fbt(test,qT);
+  double res = ogata.fbt(test,&data,qT);
   auto end = std::chrono::high_resolution_clock::now();
 
   std::cout << std::setprecision(30) << " FT( J0(x*qT) x*exp(-x) ) at qT= " << qT << std::endl;
@@ -29,7 +30,7 @@ int main( void )
 
 
   begin = std::chrono::high_resolution_clock::now();
-  res = ogata.fbtu(test,qT);
+  res = ogata.fbtu(test,&data,qT);
   end = std::chrono::high_resolution_clock::now();
 
   std::cout << std::setprecision(30) << "Numerical untransformed = " << res << std::endl;
@@ -40,7 +41,7 @@ int main( void )
 
 
   begin = std::chrono::high_resolution_clock::now();
-  res = ogata.fbt(test1,qT);
+  res = ogata.fbt(test1,&data,qT);
   end = std::chrono::high_resolution_clock::now();
 
   std::cout << std::setprecision(30) << " FT( J0(x*qT) x*exp(-x**2) ) at qT= " << qT << std::endl;
@@ -50,7 +51,7 @@ int main( void )
 
 
   begin = std::chrono::high_resolution_clock::now();
-  res = ogata.fbtu(test1,qT);
+  res = ogata.fbtu(test1,&data,qT);
   end = std::chrono::high_resolution_clock::now();
 
   std::cout << std::setprecision(30) << "Numerical untransformed = " << res << std::endl;
