@@ -75,6 +75,9 @@ class FBT:
 
     def fbt(self,g,q,N=10,Q=10.,option=0):
         """ Transformed optimized Ogata of a function f.                              """
+        """            /Infty                                                         """
+        """  result = |  d x g(x) J_nu(q*x)                                           """
+        """           /0                                                              """
         """ Parameters                                                                """
         """ g: function of single argument that has a single maximum in [0,Infinity)  """
         """ q: double precision:                                                      """
