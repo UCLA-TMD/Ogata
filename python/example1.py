@@ -14,7 +14,7 @@ test1 = lambda b:   b*np.exp(-b**2)
 exact1 = lambda qT: np.exp(-qT**2/4.)/2.
 
 N=10
-Q=10.0 # inverse of where test(b) peaks in bt space
+Q=10.0 # inverse of where b*test(b) peaks in b space
 q=1.
 nu=0.0
 

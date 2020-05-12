@@ -1,6 +1,6 @@
 CPP = g++
 
-OPT = -c -O2 -m64 -Wall -std=c++11
+OPT = -c -O3 -Wall -Werror -m64 -std=c++11
 
 OBJECTS_FTB = FTB.o
 
