@@ -123,7 +123,7 @@ double FBT::ogatat(double (*f)(double), double q, double h){
   double val = 0;
 
   try{
-    for (size_t i = 0; i < N; i++) {
+    for (size_t i = 0; i < (unsigned)N; i++) {
       zeros[i] = jn_zeros0[i];
       xi[i] = zeros[i]/M_PI;
       Jp1[i] = boost::math::cyl_bessel_j(nu+1.,M_PI*xi[i]); //The functions cyl_bessel_j and cyl_neumann return the result of the Bessel functions of the first and second kinds respectively
@@ -181,7 +181,7 @@ double FBT::ogatau(double (*f)(double), double q, double h){
 
   try
   {
-    for (size_t i = 0; i < N; i++) {
+    for (size_t i = 0; i < (unsigned)N; i++) {
       zeros[i] = jn_zeros0[i];
       xi[i] = zeros[i]/M_PI;
       Jp1[i]=boost::math::cyl_bessel_j(nu+1,M_PI*xi[i]);
