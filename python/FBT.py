@@ -79,7 +79,7 @@ class FBT:
         """  result = |  d x g(x) J_nu(q*x)                                           """
         """           /0                                                              """
         """ Parameters                                                                """
-        """ g: function of single argument that has a single maximum in [0,Infinity)  """
+        """ g: function of a single argument that has a single maximum in [0,Infinity)"""
         """ q: double precision:                                                      """
         """    the position where Fourier transform to be avaluated                   """
         """ N: int optional:                                                          """
