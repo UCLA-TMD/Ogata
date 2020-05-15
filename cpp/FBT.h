@@ -12,22 +12,24 @@ private:
   double nu; // nu is Bessel function order
   int N;     // N is number of function calls
   double Q;  // a rough estimate where the function x*f(x) has maximum x = Q
+  int option; // 0 - modified Ogata (default), 1 - unmodified Ogata, 2 - unmodified ogata with h=0.05
   constexpr static double nu_def = 0.0;
   const static int N_def = 10;
+  const static int option_def = 0; // 0 - modified Ogata (default)
   constexpr static double Q_def = 1.; // a rough estimate where the maximum of the function f(x) is
   std::vector<double> jn_zeros0;
   void acknowledgement();
-  double ogatat(double (*f)(double,void*), void* data, double q, double h);
-  double ogatau(double (*f)(double,void*), void* data, double q, double h);
-  double get_hu(double (*f)(double,void*), void* data, double q);
   double get_ht(double hu);
 
+  double ogatat(std::function<double (double) > f, double q, double h);
+  double ogatau(std::function<double (double) > f, double q, double h);
+  double get_hu(std::function<double (double) > f,  double q);
+
 public:
-  FBT(double _nu = nu_def, int _N = N_def, double _Q = Q_def); // Constructor
+  FBT(double _nu = nu_def, int option = option_def, int _N = N_def, double _Q = Q_def); // Constructor
   ~FBT(); // Deconstructor
 
-  double fbtu(double (*g)(double,void*), void* data, double q); // unmodified original Ogata
-  double fbt(double (*g)(double,void*), void* data, double q);  // modified Ogata
+  double fbt(std::function<double (double) > g,  double q);  // modified Ogata
 
 };
 

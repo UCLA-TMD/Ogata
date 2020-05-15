@@ -24,6 +24,8 @@ fbt = FBT(nu)
 wexact = exact(q)
 wfbt  = fbt.fbt(test,q,N,Q,0)
 wfbtu  = fbt.fbt(test,q,N,Q,1)
+wfbtuu  = fbt.fbt(test,q,N,Q,2)
+
 
 print( "Relative error estimate of doubling N = ", N, "at q = ", q," is ",fbt.fbterror(test1,q,N,Q))
 
@@ -31,12 +33,15 @@ print (" b*np.exp(-b) :")
 print ("Exact=", wexact)
 print ("Fbt=", wfbt)
 print ("Fbtu=", wfbtu)
+print ("Fbtuu=", wfbtuu)
 
 wexact1 = exact1(q)
 wfbt1  = fbt.fbt(test1,q,N,Q,0)
 wfbtu1  = fbt.fbt(test1,q,N,Q,1)
+wfbtuu1  = fbt.fbt(test1,q,N,Q,2)
 
 print (" b*np.exp(-b**2) :")
 print ("Exact=", wexact1)
 print ("Fbt=", wfbt1)
 print ("Fbtu=", wfbtu1)
+print ("Fbtuu=", wfbtuu1)

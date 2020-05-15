@@ -21,9 +21,10 @@ void FBT::acknowledgement(){
     std::cout << "#                Fast Bessel Transform (FBT) for TMDs                         #" << std::endl;
     std::cout << "#     Zhongbo Kang, Alexei Prokudin, Nobuo Sato, John Terry                   #" << std::endl;
     std::cout << "#                   Please cite Kang:2019ctl                                  #" << std::endl;
-    std::cout << "#                  N is number of function calls                              #" << std::endl;
     std::cout << "#                  nu is Bessel function order                                #" << std::endl;
-    std::cout << "#                                                                             #" << std::endl;
+    std::cout << "#                  option = 0,1,2  (modified, unmodified, fixed h) Ogata      #" << std::endl;
+    std::cout << "#                  N is number of function calls                              #" << std::endl;
+    std::cout << "#                  Q initial guess where function has maximum                 #" << std::endl;
     std::cout << "###############################################################################" << std::endl;
 };
 
@@ -33,7 +34,7 @@ FBT::~FBT(){
 };
 
 // Constructor
-FBT::FBT(double _nu, int _N, double _Q){
+FBT::FBT(double _nu, int _option, int _N, double _Q){
   if( _nu >= 0.){
     this->nu     = _nu;
   } else {
@@ -57,6 +58,14 @@ FBT::FBT(double _nu, int _N, double _Q){
     std::cerr << " The value of Q = " << _Q << " is not supported." << std::endl;
     std::cerr << " Falling back to default  Q = "  << FBT::Q_def <<std::endl;
     this->Q     = FBT::Q_def;
+  }
+
+  if( _option <= 2 && _option >= 0){
+    this->option     = _option;
+  } else {
+    std::cerr << " The value of option = " << _option << " is not supported." << std::endl;
+    std::cerr << " Falling back to default  option = "  << FBT::option_def <<std::endl;
+    this->option     = FBT::option_def;
   }
 
   // Sets maximum number of nodes to about 2^15:
@@ -85,12 +94,13 @@ double get_psip( double t){
 };
 
 
-double f_for_ogata(double x, double (*g)(double,void*), void* data, double q){
-  return g(x/q,data)/q;
+//double f_for_ogata
+double f_for_ogata(double x, std::function<double (double) > g, double q){
+  return g(x/q)/q;
 };
 
 //Transformed Ogata quadrature sum. Equation ? in the reference.
-double FBT::ogatat(double (*f)(double,void*), void* data, double q, double h){
+double FBT::ogatat(std::function<double (double) > f, double q, double h){
   double nu = this->nu;
   int N = this->N;
 
@@ -130,7 +140,7 @@ double FBT::ogatat(double (*f)(double,void*), void* data, double q, double h){
       w[i] = boost::math::cyl_neumann(nu,M_PI*xi[i])/Jp1[i];
       knots[i] = M_PI/h*get_psi( h*xi[i] );
       Jnu[i] = boost::math::cyl_bessel_j(nu,knots[i]);
-      double temp =  get_psip(h*xi[i]);
+      double temp =  get_psip( h*xi[i] );
 
       if( isnan(temp) )
       {
@@ -140,7 +150,7 @@ double FBT::ogatat(double (*f)(double,void*), void* data, double q, double h){
       {
         psip[i] = temp;
       };
-      F[i] = f_for_ogata(knots[i], f, data, q);
+      F[i] = f_for_ogata(knots[i], f, q);
       val += M_PI*w[i]*F[i]*Jnu[i]*psip[i];
 
 
@@ -155,7 +165,7 @@ double FBT::ogatat(double (*f)(double,void*), void* data, double q, double h){
 };
 
 //"""Untransformed Ogata quadrature sum. Equation ? in the reference."""
-double FBT::ogatau(double (*f)(double,void*), void* data, double q, double h){
+double FBT::ogatau(std::function<double (double) > f, double q, double h){
   double nu = this->nu;
   int N = this->N;
 
@@ -187,7 +197,7 @@ double FBT::ogatau(double (*f)(double,void*), void* data, double q, double h){
       Jp1[i]=boost::math::cyl_bessel_j(nu+1,M_PI*xi[i]);
       w[i]=boost::math::cyl_neumann(nu,M_PI*xi[i])/Jp1[i];
       knots[i] = xi[i]*h;
-      F[i]=f_for_ogata(knots[i], f, data, q)*boost::math::cyl_bessel_j(nu,knots[i]);
+      F[i]=f_for_ogata(knots[i], f, q)*boost::math::cyl_bessel_j(nu,knots[i]);
       val+=h*w[i]*F[i];
     }
   }
@@ -199,17 +209,18 @@ double FBT::ogatau(double (*f)(double,void*), void* data, double q, double h){
   return val;
 };
 
-double f_for_get_hu(double x, double (*g)(double,void*), void* data, double q){
-   return -abs(x*g(x/q, data));
+//double f_for_get_hu
+double f_for_get_hu(double x, std::function<double (double) > g, double q){
+   return -abs(x*g(x/q));
 };
 
 //"""Determines the untransformed hu by maximizing contribution to first node. Equation ? in ref."""
-double FBT::get_hu(double (*f)(double,void*), void* data, double q){
+double FBT::get_hu(std::function<double (double) > f, double q){
   double Q = this->Q;
 
   double zero1 = jn_zeros0[0];
   const int double_bits = std::numeric_limits<double>::digits;
-  std::pair<double, double> r = boost::math::tools::brent_find_minima(std::bind(f_for_get_hu, std::placeholders::_1, f, data, q), Q/10., 10.*Q, double_bits);
+  std::pair<double, double> r = boost::math::tools::brent_find_minima(std::bind(f_for_get_hu, std::placeholders::_1, f, q), Q/10., 10.*Q, double_bits);
 
   double hu = r.first/zero1;
   if(hu >= 3.){
@@ -220,9 +231,6 @@ double FBT::get_hu(double (*f)(double,void*), void* data, double q){
   return hu;
 };
 
-// double f_for_get_ht(double x, double hu, double zeroN){
-//   return hu-M_PI*tanh(M_PI/2.*sinh(x*zeroN/M_PI));
-// };
 
 //"""Determine transformed ht from untransformed hu. Equation ? in ref."""
 double FBT::get_ht(double hu){
@@ -231,39 +239,35 @@ double FBT::get_ht(double hu){
   double zeroN = double(jn_zeros0[N-1]);
 
   return M_PI/zeroN*asinh(2./M_PI*atanh(hu/M_PI));
-
-
 };
 
-//"""Untransformed optimized Ogata."""
-double FBT::fbtu(double (*g)(double,void*), void* data, double q){
-  /* Numerical computation of F(q)=int(f(x)*Jn(x*q)) Bessel transform
-		[in]g     - integrand
-		[in]data  - pointer on user-defined data which will
-		[in]data  - pointer on user-defined data which will
-					be passed to g every time it called (as third parameter).
-		[in]q - evaluation point
-
-	return:
-			-computed integral value
-	*/
-  double hu = get_hu(g,data,q);
-  return ogatau(g,data,q,hu);
-};
 
 //"""Transformed optimized Ogata."""
-double FBT::fbt(double (*g)(double,void*), void* data, double q){
+double FBT::fbt(std::function<double (double) > g,  double q){
   /* Numerical computation of F(q)=int(f(x)*Jn(x*q)) Bessel transform
 		[in]g     - integrand
-		[in]data  - pointer on user-defined data which will
-		[in]data  - pointer on user-defined data which will
-					be passed to g every time it called (as third parameter).
 		[in]q - evaluation point
 
 	return:
 			-computed integral value
 	*/
-  double hu = get_hu(g,data,q);
-  double ht = get_ht(hu);
-  return ogatat(g,data,q,ht);
+
+  double hu = 0.0;
+  double ht = 0.0;
+  double result = 0.0;
+
+  if (this->option == 0){ // default modified Ogata
+    hu = get_hu(g,q);
+    ht = get_ht(hu);
+    result = ogatat(g,q,ht);
+  } else if (this->option == 1){ // umodified Ogata
+    hu = get_hu(g ,q);
+    result = ogatau(g,q,hu);
+  } else if (this->option == 2){ // umodified Ogata h = 0.05
+    hu = 0.05;
+    result = ogatau(g,q,hu);
+  };
+
+  return result;
+
 };
