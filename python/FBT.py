@@ -89,17 +89,17 @@ class FBT:
         """ option: int optional:                                                     """
         """    0 transformed Ogata  optimized h                                       """
         """    1 untransformed Ogata  optimized h                                     """
-        """    2 untransformed Ogata   with deafult h = 0.05                          """
+        """    2 untransformed Ogata   with default h = 0.05                          """
         nu = self.nu
         f = lambda x: g(x/q)/q
-        if option == 0: # optimized Ogata
+        if option == 0:   # Transformed Ogata optimized h
             hu = self._get_hu(g,q,Q)
             ht = self._get_ht(hu,N)
             result = self._ogatat(f,ht,N,nu)
-        elif option == 1: # untransformed Ogata  optimized h
+        elif option == 1: # Untransformed Ogata optimized h
             hu = self._get_hu(g,q,Q)
             result=self._ogatau(f,hu,N,nu)
-        elif option == 2: # untransformed Ogata   with deafult h = 0.05
+        elif option == 2: # Traditional Ogata with h = 0.05
             hu = 0.05
             result=self._ogatau(f,hu,N,nu)
         return result
@@ -114,7 +114,7 @@ class FBT:
 
 
 
-if __name__ == "__main__":
-    f = lambda x: x*np.exp(-x)
-    fbt = FBT(0)
-    print (fbt.fbt(f,1.,20,1.))
+#if __name__ == "__main__":
+#    f = lambda x: x*np.exp(-x)
+#    fbt = FBT(0)
+#    print (fbt.fbt(f,1.,20,1.))
