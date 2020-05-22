@@ -89,7 +89,7 @@ class FBT:
         """ option: int optional:                                                     """
         """    0 transformed Ogata  optimized h                                       """
         """    1 untransformed Ogata  optimized h                                     """
-        """    2 untransformed Ogata   with default h = 0.05                          """
+        """    2 transformed Ogata   with default h = 0.05                          """
         nu = self.nu
         f = lambda x: g(x/q)/q
         if option == 0:   # Transformed Ogata optimized h
@@ -99,9 +99,9 @@ class FBT:
         elif option == 1: # Untransformed Ogata optimized h
             hu = self._get_hu(g,q,Q)
             result=self._ogatau(f,hu,N,nu)
-        elif option == 2: # Traditional Ogata with h = 0.05
+        elif option == 2: # Transformed Ogata with h = 0.05
             hu = 0.05
-            result=self._ogatau(f,hu,N,nu)
+            result=self._ogatat(f,hu,N,nu)
         return result
 
     def fbterror(self,g,q,N=10,Q=10.,option=0):
