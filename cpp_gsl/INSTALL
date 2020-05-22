@@ -1,0 +1,51 @@
+make example.exe
+./example.exe
+
+Should produce something like
+
+###############################################################################
+#                                                                             #
+#                Fast Bessel Transform (FBT) for TMDs                         #
+#     Zhongbo Kang, Alexei Prokudin, Nobuo Sato, John Terry                   #
+#                   Please cite Kang:2019ctl                                  #
+#                  nu is Bessel function order                                #
+#                  option = 0,1,2  (modified, unmodified, fixed h) Ogata      #
+#                  N is number of function calls                              #
+#                  Q initial guess where function has maximum                 #
+###############################################################################
+###############################################################################
+#                                                                             #
+#                Fast Bessel Transform (FBT) for TMDs                         #
+#     Zhongbo Kang, Alexei Prokudin, Nobuo Sato, John Terry                   #
+#                   Please cite Kang:2019ctl                                  #
+#                  nu is Bessel function order                                #
+#                  option = 0,1,2  (modified, unmodified, fixed h) Ogata      #
+#                  N is number of function calls                              #
+#                  Q initial guess where function has maximum                 #
+###############################################################################
+###############################################################################
+#                                                                             #
+#                Fast Bessel Transform (FBT) for TMDs                         #
+#     Zhongbo Kang, Alexei Prokudin, Nobuo Sato, John Terry                   #
+#                   Please cite Kang:2019ctl                                  #
+#                  nu is Bessel function order                                #
+#                  option = 0,1,2  (modified, unmodified, fixed h) Ogata      #
+#                  N is number of function calls                              #
+#                  Q initial guess where function has maximum                 #
+###############################################################################
+ FT( J0(x*qT) x*exp(-x) ) at qT= 1
+Numerical transformed = 0.353775756540979369191290970775
+Calc time: 127927 nanoseconds
+Numerical untransformed = 0.346014274119328169021514440828
+Calc time: 6633 nanoseconds
+Numerical untransformed (h=0.05) = 0.0911722493683768953065538198643
+Calc time: 4852 nanoseconds
+Exact = 0.353553390593273786368655464685
+ FT( J0(x*qT) x*exp(-x**2) ) at qT= 1
+Numerical transformed = 0.389400387841910167185943691948
+Calc time: 7160 nanoseconds
+Numerical untransformed = 0.389400392824546803804963701623
+Calc time: 5539 nanoseconds
+Numerical untransformed (h=0.05) = 0.111906685033023770015070397221
+Calc time: 4743 nanoseconds
+Exact = 0.389400391535702439238519900755

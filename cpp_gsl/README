@@ -1,0 +1,20 @@
+###############################################################################
+#                                                                             #
+#                Fast Bessel Transform (FBT) for TMDs                         #
+#     Zhongbo Kang, Alexei Prokudin, Nobuo Sato, John Terry                   #
+#                   Please cite Kang:2019ctl                                  #
+#                  nu is Bessel function order                                #
+#                  option = 0,1,2  (modified, unmodified, fixed h) Ogata      #
+#                  N is number of function calls                              #
+#                  Q initial guess where function has maximum                 #
+###############################################################################
+
+make example.exe
+./example.exe
+
+Dependencies:
+GSL libraries
+C++11
+
+Author:
+Alexei Prokudin, prokudin@jlab.org (2020)
