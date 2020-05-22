@@ -263,9 +263,9 @@ double FBT::fbt(std::function<double (double) > g,  double q){
   } else if (this->option == 1){ // umodified Ogata
     hu = get_hu(g ,q);
     result = ogatau(g,q,hu);
-  } else if (this->option == 2){ // umodified Ogata h = 0.05
+  } else if (this->option == 2){ // modified Ogata h = 0.05
     hu = 0.05;
-    result = ogatau(g,q,hu);
+    result = ogatat(g,q,hu);
   };
 
   return result;
