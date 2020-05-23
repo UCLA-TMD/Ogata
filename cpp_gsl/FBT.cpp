@@ -263,15 +263,10 @@ double FBT::get_hu(std::function<double (double) > f, double q){
 
     }
   while (status == GSL_CONTINUE && iter < max_iter);
-
-  double hu = m/zero1;
-
+  
   gsl_min_fminimizer_free (s);
 
-  //const int double_bits = std::numeric_limits<double>::digits;
-  //std::pair<double, double> r = boost::math::tools::brent_find_minima(std::bind(f_for_get_hu, std::placeholders::_1, f, q), Q/10., 10.*Q, double_bits);
-
-  //double hu = r.first/zero1;
+  double hu = m/zero1;
 
 
   if(hu >= 3.){
