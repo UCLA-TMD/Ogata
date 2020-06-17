@@ -1,8 +1,29 @@
 Overview
 ========
 
-This repository contains the optimized Ogata quadrature numerical algorithm, available in both python 2.7 and Fortran 77. This algorithm uses the Ogata quadrature method for applications to CSS TMD physics. The integration optimizes integrals of the following form
+The algorithm in this repository optimizes Ogata's quadrature formula for TMD phenomenology purposes. The work in this repository is based on the Ogata quadrature formula which is given by
 
+.. math::
+
+  \begin{align}
+  \int_{0}^{\infty} dx f(x) J_n(x) \approx \pi \sum_{j = 1}^{N} \omega_{n j}  f\left(\frac{\pi}{h}\psi(x_{n j})\right) J_n\left(\frac{\pi}{h}\psi(x_{n j})\right) \psi'(x_{n j})\,.
+  \end{align}
+
+:math:`w_{n j}` and :math:`x_{n j}` are the weights and nodes of the quadrature which are defined by
+
+.. math::
+
+  \begin{align}
+  w_{n j} = \frac{2}{\pi^2 \xi_{n j}J_{n+1}(\pi\xi_{n j})}\;,
+  \qquad
+  x_{n j} = h \xi_{n j}\; ,
+  \qquad
+  J_n(\pi \xi_{n j}) = 0\;
+  \end{align}
+
+while the function :math:`\psi(t) = t \tanh\left(\frac{\pi}{2}\sinh(t)\right)`. The function :math:`J_n(x)` is the Bessel function of the first kind and :math:`n` is the order of the Bessel function. Here the function :math:`f(x)` must be even with respect to the y-axis. :math:`N` is the number of nodes used in the quadrature while :math:`h` is the node spacing parameter. For further details on this quadrature formula, please see reference [54] in our paper.
+
+For TMD phenomenology, numerical Hankel transforms must be performed from from :math:`b_\perp`-space to transverse momentum space, :math:`q_\perp`-space. However, integrals of the form
 
 .. math::
 
@@ -10,24 +31,6 @@ This repository contains the optimized Ogata quadrature numerical algorithm, ava
   W_\nu(q_\perp) = \int_0^{\infty} \frac{db_\perp}{2\pi} b_\perp^{\nu+1} \widetilde{W}(b_\perp) J_\nu(b_\perp q_\perp).
   \end{align}
 
-Here  :math:`\widetilde{W}(b_\perp)` is a function which is taken be  analytic close the the real axis and have a single peak at :math:`b_\perp>0`. The algorithm uses equations 15 in the reference paper and is called the 'optimized Ogata' method. The quadrature sum is given by
+tend to be huge bottlenecks of numerical computations.
 
-.. math::
-
-  \begin{align}
-  W_\nu(q_\perp) \approx \frac{1}{2q_\perp}\sum_{k = 1}^{N} \omega_{\nu k} \psi'(x_{\nu k}) (\frac{\pi}{h q_\perp}\psi(x_{\nu k}))^{\nu+1} \widetilde{W}(\frac{\pi}{h q_\perp}\psi(x_{\nu k})) J_\nu(\frac{\pi}{h}\psi(x_{\nu k}))
-  \end{align}
-
-The parameters :math:`h` is optimized using equations (19) and (21) in the reference. Furthermore :math:`\psi(x) = x\tanh\left[\frac{\pi}{2}\sinh(x)\right]`. Here
-
-.. math::
-
-  \begin{align}
-  w_{\nu k} = \frac{2}{\pi^2 \xi_{\nu |k|}J_{\nu+1}(\pi\xi_{\nu |k|})}\;,
-  \qquad
-  x_{\nu k} = h \xi_{\nu k}\; ,
-  \qquad
-  J_{\nu}(\pi \xi_{\nu k}) = 0\; .
-  \end{align}
-
-The integrator takes as an input the parameters :math:`\nu`, the order of the Bessel function, :math:`q_\perp`:, the transverse momentum, :math:`Q`, the estimated value of the reciprocal of the location of the peak of the function in :math:`b_\perp` space, and :math:`N`, the number of nodes. The function returns a single numerical value which gives an estimation of the desired integral. If :math:`Q` is not given, it is taken to be 10.
+The algorithm that we present exploits the fact that for TMD applications, the function :math:`b_\perp^{\nu+1} \widetilde{W}(b_\perp)` is a unimodal function. Our integrator takes takes as input :math:`\widetilde{W}(b_\perp)`, :math:`q_\perp`, :math:`N`, as well as :math:`Q`, a guess for the inverse of the value of :math:`b_\perp` at which the function :math:`b_\perp^{\nu+1} \widetilde{W}(b_\perp)` is maximized. From this function and these parameters, the algorithm uses Eq. (21) and Eq.(23) in our paper to find that value of :math:`h` which optimizes the performance of the quadrature.

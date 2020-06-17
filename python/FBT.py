@@ -59,10 +59,9 @@ class FBT:
         zero1 = self.jn_zeros0[0]
         h = lambda x: -abs(x*f(x/q))
         """Use brent method to maximize."""
-        hu = minimize_scalar(h, bracket=None, bounds=(Q/10,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1
-        if hu>3.:
-            hu = 3.
-            print ('Warning: Number of nodes is too small.')
+        hu = minimize_scalar(h, bracket=None, bounds=(Q/10,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1*np.pi
+        if hu>2.:
+            hu = 2.
         return hu
 
     def _get_ht(self,hu,N):

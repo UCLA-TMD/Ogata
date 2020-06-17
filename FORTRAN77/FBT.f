@@ -515,9 +515,8 @@ c-----------------------------------------------------------------------
             J0=J1zeros(n)
       endif
       hu = get_hu(f,qT,Q,nu)
-      if (hu.gt.3d0) then
-          hu = 3d0
-          write(6,*) 'Warning: Number of nodes is too small.'
+      if (hu.gt.2d0) then
+          hu = 2d0
       endif
       ht0=2d0*hu/(J0**2d0)
       dum=1.0d0
@@ -546,6 +545,9 @@ c-----------------------------------------------------------------------
       real*8, external :: f,GOLDEN,f2xf
       real*8 J0,Q,X1,X2,X3,TOL,qT,hu
       integer nu
+      real*8 pi
+
+      pi = datan(1d0)*4d0
       
       if (nu.eq.0) then
             J0=2.404825557695773d0

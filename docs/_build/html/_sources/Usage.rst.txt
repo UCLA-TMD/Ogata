@@ -1,14 +1,18 @@
 Usage
 =====
 
-The repository contains a python 2.7 library named 'FBT.py' as well as example files 'example.py'. Fortran source, example and Make files, 'FBT.f', 'example.f' and Makefile, are included as well. 
+The code is available for download in Python, C++, as well as Fortran 77. The code contains example programs for each language. 
 
 Dependencies
 ------------
 
 - Only Linux and OSX are supported.
 
-- Python package relies on Numpy and Scipy libraries. We recommend to install anaconda (python2) which comes will all the necessary libraries.
+- Python package relies on Numpy and Scipy libraries. We recommend that the user installs anaconda for either python2 or python3 before using the library.
+
+- C++ package relies either on Boost dependency or GSL dependency.
+
+- Fortran 77 package is a standalone and has no external dependencies. 
 
 Installation
 ------------
