@@ -111,7 +111,17 @@ class FBT:
         result2N =  self.fbt(g,q,N2,Q,option);
         return np.abs((result2N-resultN)/result2N)
 
-
+    def fbt_findN(self,g,q,err,Q=10,option=0):
+        _N = 2
+        _Q= Q
+        _option = option
+        W1 = self.fbt(g,q,N=  _N,Q=_Q,option=_option)
+        W2 = self.fbt(g,q,N=2*_N,Q=_Q,option=_option)
+        while abs(W1-W2)/W2>err:
+            _N = 2*_N
+            W1 = self.fbt(g,q,N=  _N,Q=_Q,option=_option)
+            W2 = self.fbt(g,q,N=2*_N,Q=_Q,option=_option)
+        return _N
 
 #if __name__ == "__main__":
 #    f = lambda x: x*np.exp(-x)

@@ -16,6 +16,8 @@ nu=0
 
 fbt = FBT(nu)
 
+print(fbt.fbt_findN(test,0.5,1e-3,Q=1,option=0))
+
 exact = lambda qT: (1+qT**2)**(-1.5)
 wexact = [exact(_q) for _q in q]
 wfbt  = [fbt.fbt(test,_q,N,Q) for _q in q]
