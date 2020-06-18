@@ -39,7 +39,7 @@ For TMD phenomenology, numerical Hankel transforms must be performed from from :
 
 tend to be huge bottlenecks of numerical computations. Note that to go from the first to the second line, we have made the substitution :math:`x = b_\perp q_\perp` in order to match the form of the Ogata quadrature formula.
 
-In order to optimize the quadrature formula, we exploit the fact that the function :math:`b_\perp^{n+1} \widetilde{W}(b_\perp)` is unimodal on the positive :math:`b_\perp`-axis. Our integrator takes takes as input :math:`\widetilde{W}(b_\perp)`, :math:`q_\perp`, :math:`N`, :math:`n`, as well as :math:`Q`, an initial guess for the inverse of the value of :math:`b_\perp` at which the function :math:`b_\perp^{n+1} \widetilde{W}(b_\perp)` is maximized. From this input, the algorithm uses Eq. (21) and Eq.(23) in our paper to find that value of :math:`h` which optimizes the performance of the quadrature. The integrator outputs the numerical value
+In order to optimize the quadrature formula, we exploit the fact that the function :math:`b_\perp^{n+1} \widetilde{W}(b_\perp)` is unimodal on the positive :math:`b_\perp`-axis. Our integrator takes as input :math:`\widetilde{W}(b_\perp)`, :math:`q_\perp`, :math:`N`, :math:`n`, as well as :math:`Q`, an initial guess for the inverse of the value of :math:`b_\perp` at which the function :math:`b_\perp^{n+1} \widetilde{W}(b_\perp)` is maximized. From this input, the algorithm uses Eq. (21) and Eq.(23) in our paper to find that value of :math:`h` which optimizes the performance of the quadrature. The integrator outputs the numerical value
 
 .. math::
 
@@ -47,4 +47,4 @@ In order to optimize the quadrature formula, we exploit the fact that the functi
   \textrm{FBT}(n,\widetilde{W}\left(b_\perp\right),q_\perp,Q,N) \approx \frac{1}{2 q_\perp^{2n+2}} \sum_{j = 1}^{N} \omega_{n j} \left(\frac{\pi}{h}\psi(x_{n j})\right)^{2n+1} \widetilde{W}\left(\frac{1}{q_\perp}\frac{\pi}{h}\psi(x_{n j})\right) J_n\left(\frac{\pi}{h}\psi(x_{n j})\right) \psi'(x_{n j})\,.
   \end{align}
 
-It is important to note when using the integrator, the factor of :math:`\frac{1}{2\pi}` is included in the numerical output and that the function which is passes to :math:`\textrm{FBT}` is :math:`b_\perp` dependent.
+It is important to note when using the integrator, the factor of :math:`\frac{1}{2\pi}` is included in the numerical output and that the function :math:`\widetilde{W}` must be :math:`b_\perp` dependent.

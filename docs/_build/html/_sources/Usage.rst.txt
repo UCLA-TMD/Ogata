@@ -136,7 +136,7 @@ The analytic Bessel transform of the test function is also in this file. ::
 
   end
 
-To generate the test issue the following commands. ::
+To generate the test, issue the following commands. ::
 
    make
    ./example.out
