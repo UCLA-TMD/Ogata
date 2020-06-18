@@ -9,12 +9,12 @@
       write(1, *) 'qT fbt exact'
 
       do i = 1, 100
-      qt = 0.01*i
-      Q=1d0
-      nu=0
-      z=1d0
-      n = 10
-      ex = exact(qT)
+      qt = 0.01*i       
+      Q=1d0             ! The initial guess for the peak of the test function
+      nu=0              ! nu the order of the Bessel function
+      z=1d0             ! z momentum fraction for fragmentation, set equal to one for other applications
+      n = 10            ! number of nodes
+      ex = exact(qT)    ! analytic result
       call fbt(test_fun,qt,Q,nu,z,n,fuu)
       write(1,*) qT,fuu,ex
       enddo

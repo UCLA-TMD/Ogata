@@ -44,7 +44,7 @@ In order to optimize the quadrature formula, we exploit the fact that the functi
 .. math::
 
   \begin{align}
-  \textrm{FBT}(n,\widetilde{W}\left(b_\perp\right),q_\perp,Q,N) \approx \frac{1}{2 q_\perp^{2n+2}} \sum_{j = 1}^{N} \omega_{n j} \left(\frac{\pi}{h}\psi(x_{n j})\right)^{2n+1} \widetilde{W}\left(\frac{1}{q_\perp}\frac{\pi}{h}\psi(x_{n j})\right) J_n\left(\frac{\pi}{h}\psi(x_{n j})\right) \psi'(x_{n j})\,.
+  \textrm{FBT}(n,\widetilde{W}\left(b_\perp\right),q_\perp,Q,N) \approx \frac{1}{2 q_\perp^{2n+2}} \sum_{j = 1}^{N} \omega_{n j} & \left(\frac{\pi}{h}\psi(x_{n j})\right)^{2n+1} \widetilde{W}\left(\frac{1}{q_\perp}\frac{\pi}{h}\psi(x_{n j})\right) \\ & \times J_n\left(\frac{\pi}{h}\psi(x_{n j})\right) \psi'(x_{n j})\,.
   \end{align}
 
 It is important to note when using the integrator, the factor of :math:`\frac{1}{2\pi}` is included in the numerical output and that the function :math:`\widetilde{W}` must be :math:`b_\perp` dependent.
