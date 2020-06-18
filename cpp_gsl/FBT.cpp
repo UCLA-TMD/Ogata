@@ -266,12 +266,12 @@ double FBT::get_hu(std::function<double (double) > f, double q){
   
   gsl_min_fminimizer_free (s);
 
-  double hu = m/zero1;
+  double hu = m/zero1*M_PI;
 
 
-  if(hu >= 3.){
-    hu = 3.;
-    std::cerr<< "Warning: Number of nodes is too small N = " << this->N << std::endl;
+  if(hu >= 2.){
+    hu = 2.;
+//    std::cerr<< "Warning: Number of nodes is too small N = " << this->N << std::endl;
   }
 
   return hu;

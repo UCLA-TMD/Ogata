@@ -222,10 +222,10 @@ double FBT::get_hu(std::function<double (double) > f, double q){
   const int double_bits = std::numeric_limits<double>::digits;
   std::pair<double, double> r = boost::math::tools::brent_find_minima(std::bind(f_for_get_hu, std::placeholders::_1, f, q), Q/10., 10.*Q, double_bits);
 
-  double hu = r.first/zero1;
-  if(hu >= 3.){
-    hu = 3.;
-    std::cerr<< "Warning: Number of nodes is too small N = " << this->N << std::endl;
+  double hu = r.first/zero1*M_PI;
+  if(hu >= 2.){
+    hu = 2.;
+//    std::cerr<< "Warning: Number of nodes is too small N = " << this->N << std::endl;
   }
 
   return hu;
