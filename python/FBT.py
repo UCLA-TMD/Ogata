@@ -39,7 +39,7 @@ class FBT:
         psip=get_psip(h*xi)
         F=f(knots)
         psip[np.isnan(psip)]=1.0
-        val=np.pi*np.sum(w*F*Jnu*psip)
+        val=0.5*np.sum(w*F*Jnu*psip)
         return val
 
     def _ogatau(self,f,h,N,nu):
@@ -51,7 +51,7 @@ class FBT:
         knots = xi*h
         g=lambda x: f(x)*jv(nu,x)
         F=g(knots)
-        val=h*np.sum(w*F)
+        val=h*np.sum(w*F)/2./np.pi
         return val#,h*w*F
 
     def _get_hu(self,f,q,Q):

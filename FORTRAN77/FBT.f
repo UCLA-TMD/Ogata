@@ -124,7 +124,8 @@ c Inversions for nu=0,1
 c-----------------------------------------------------------------------
       subroutine ogataJ0(func,h,N,qT,z,res)
       implicit none
-      real*8, intent(in) :: h,N,qT,z
+      integer, intent(in) :: N
+      real*8, intent(in) :: h,qT,z
       real*8, intent(out) :: res
       real(kind=8), external :: func
       real*8 pi,knots,Jnu,xi,psi,psip,bessel0_og
@@ -236,10 +237,10 @@ c	Ogata weights for J0: w_k= Y0(J0zeros(k))/J1(J0zeros(k))
      >               0.999998646995588d0, 0.999998674536377d0 /
 
       res=0d0
-      if (int(N).gt.size(J0zeros)) then
+      if (N.gt.size(J0zeros)) then
         print *, 'N exceeds zeros'
       else
-        do j = 1,int(N)
+        do j = 1,N
           xi=J0zeros(j)/pi
           knots = pi/h*psi(h*xi)
           Jnu=bessel0_og(knots)
@@ -252,7 +253,8 @@ c	Ogata weights for J0: w_k= Y0(J0zeros(k))/J1(J0zeros(k))
       
       subroutine ogataJ1(func,h,N,qT,z,res)
       implicit none
-      real*8, intent(in) :: h,N,qT,z
+      integer, intent(in) :: n
+      real*8, intent(in) :: h,qT,z
       real*8, intent(out) :: res
       real(kind=8) , external :: func,psi,psip,bessel1_og
       real*8 pi,knots,Jnu,xi
@@ -363,10 +365,10 @@ c	Ogata weights for J1: w_k= Y1(J1zeros(k))/J2(J1zeros(k))
      >          1.000004017458786d0, 1.000003936094799d0 /
 
       res=0d0
-      if (int(N).gt.size(J1zeros)) then
+      if (N.gt.size(J1zeros)) then
         print *, N, 'N exceeds zeros'
       else
-        do j = 1,int(N)
+        do j = 1,N
           xi=J1zeros(j)/pi
           knots = pi/h*psi(h*xi)
           Jnu=bessel1_og(knots)
@@ -378,19 +380,20 @@ c	Ogata weights for J1: w_k= Y1(J1zeros(k))/J2(J1zeros(k))
       end subroutine ogataJ1
 
 c-----------------------------------------------------------------------
-c New Adaptive Ogata 1/{2\pi}\int_0^{\infty} db b J_{\nu}(qT b) func(b)
+c New Adaptive Ogata\int_0^{\infty} db/2/pi b J_{\nu}(qT b) func(b)
 c----------------------------------------------------------------------
-      subroutine fbt(func,qT,Q,nu,z,res)
+      subroutine fbt(func,qT,Q,nu,z,n,res)
       implicit none
       real*8, intent(in) :: qT,Q,z
-      integer, intent(in) :: nu
-      real*8 h,n
+      integer, intent(in) :: nu,n
+      real*8 h,pi
       real(kind=8), external :: func
       real(kind=8), intent(out) :: res
       real*8, external :: get_ht
+      
+      pi = datan(1d0)*4d0
 
-      n=20d0
-      h=get_ht(func,nu,int(n),qT,Q)
+      h=get_ht(func,nu,n,qT,Q)
       if (nu.eq.0) then
         call ogataJ0(func,h,n,qT,z,res)
       else if (nu.eq.1) then
@@ -403,7 +406,7 @@ c----------------------------------------------------------------------
 c-----------------------------------------------------------------------
 c     Get ht
 c-----------------------------------------------------------------------
-      real*8 function get_ht(f,nu,n,qT,Q)
+      real*8 function get_ht(f,nu,N,qT,Q)
       implicit none
       real*8 J0,J0zeros(98),J1zeros(98),Q,dum,ht0,hu,ht,qT
       real*8, external :: solvehu,solvehup,get_hu,f

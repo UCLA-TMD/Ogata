@@ -90,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#python-example">Python Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fortran77-example">FORTRAN77 Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Publication.html">Publication</a></li>
@@ -232,6 +233,68 @@
 </pre></div>
 </div>
 <img alt="_images/example_plot_t.png" src="_images/example_plot_t.png" />
+</div>
+<div class="section" id="fortran77-example">
+<h2>FORTRAN77 Example<a class="headerlink" href="#fortran77-example" title="Permalink to this headline">¶</a></h2>
+<p>Here we will give an example use for FBT in FORTRAN77.</p>
+<div class="math notranslate nohighlight">
+\[\int_0^{\infty} db_\perp b_\perp e^{-b_\perp} J_\nu(b_\perp q_\perp).\]</div>
+<p>The program example.f writes the <span class="math notranslate nohighlight">\(\textrm{FBT}\)</span> result along with the exact result to “output.dat” for a range of values of <span class="math notranslate nohighlight">\(q_\perp\)</span>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>program example
+implicit none
+real*8 qt,Q,z,fuu,ex,exact,test_fun
+external test_fun,fbt
+integer nu,n
+integer i
+
+open(unit = 1, file = &quot;output.dat&quot;)
+write(1, *) &#39;qT fbt exact&#39;
+
+do i = 1, 100
+qt = 0.01*i
+Q=1d0
+nu=0              ! nu the order of the Bessel function
+z=1d0             ! z momentum fraction for fragmentation, set equal to one for other applications
+n = 10            ! number of nodes
+ex = exact(qT)    ! analytic result
+call fbt(test_fun,qt,Q,nu,z,n,fuu)
+write(1,*) qT,fuu,ex
+enddo
+close(1)
+
+end program
+</pre></div>
+</div>
+<p>The test function is defined in this program.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">real</span><span class="o">*</span><span class="mi">8</span> <span class="n">function</span> <span class="n">test_fun</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">implicit</span> <span class="n">none</span>
+<span class="n">real</span><span class="o">*</span><span class="mi">8</span> <span class="n">b</span>
+
+<span class="n">test_fun</span> <span class="o">=</span> <span class="n">b</span><span class="o">*</span><span class="n">dexp</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">end</span> <span class="n">function</span>
+</pre></div>
+</div>
+<p>The analytic Bessel transform of the test function is also in this file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">real</span><span class="o">*</span><span class="mi">8</span> <span class="n">function</span> <span class="n">exact</span><span class="p">(</span><span class="n">qT</span><span class="p">)</span>
+<span class="n">real</span><span class="o">*</span><span class="mi">8</span> <span class="n">qT</span>
+<span class="n">real</span><span class="o">*</span><span class="mi">8</span> <span class="n">pi</span>
+
+<span class="n">pi</span> <span class="o">=</span> <span class="n">datan</span><span class="p">(</span><span class="mi">1</span><span class="n">d0</span><span class="p">)</span><span class="o">*</span><span class="mi">4</span><span class="n">d0</span>
+
+<span class="n">exact</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="n">d0</span><span class="o">+</span><span class="n">qT</span><span class="o">*</span><span class="n">qT</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="n">d0</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="n">d0</span><span class="o">/</span><span class="n">pi</span>
+
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>To generate the test issue the following commands.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
+<span class="o">./</span><span class="n">example</span><span class="o">.</span><span class="n">out</span>
+<span class="n">python</span> <span class="n">plot</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The output should be the following figure.</p>
+<img alt="_images/example_plot_t_F77.png" src="_images/example_plot_t_F77.png" />
 </div>
 </div>
 

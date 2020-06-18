@@ -10,3 +10,4 @@ example:
 clean:
 	rm *.o
 	rm example.out
+	rm output.dat

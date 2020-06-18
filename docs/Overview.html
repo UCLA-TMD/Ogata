@@ -157,12 +157,12 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>The algorithm in this repository optimizes Ogata’s quadrature formula for TMD phenomenology purposes. The work in this repository is based on the Ogata quadrature formula which is given by</p>
+<p>The algorithm in this repository optimizes Ogata’s quadrature formula for TMD phenomenology. The work in this repository is based on the Ogata quadrature formula which is given by the expression</p>
 <div class="math notranslate nohighlight">
 \[\begin{align}
 \int_{0}^{\infty} dx f(x) J_n(x) \approx \pi \sum_{j = 1}^{N} \omega_{n j}  f\left(\frac{\pi}{h}\psi(x_{n j})\right) J_n\left(\frac{\pi}{h}\psi(x_{n j})\right) \psi'(x_{n j})\,.
 \end{align}\]</div>
-<p><span class="math notranslate nohighlight">\(w_{n j}\)</span> and <span class="math notranslate nohighlight">\(x_{n j}\)</span> are the weights and nodes of the quadrature which are defined by</p>
+<p>In this expression, <span class="math notranslate nohighlight">\(w_{n j}\)</span> and <span class="math notranslate nohighlight">\(x_{n j}\)</span> are the weights and nodes of the quadrature which are defined by</p>
 <div class="math notranslate nohighlight">
 \[\begin{align}
 w_{n j} = \frac{2}{\pi^2 \xi_{n j}J_{n+1}(\pi\xi_{n j})}\;,
@@ -171,14 +171,23 @@ x_{n j} = h \xi_{n j}\; ,
 \qquad
 J_n(\pi \xi_{n j}) = 0\;
 \end{align}\]</div>
-<p>while the function <span class="math notranslate nohighlight">\(\psi(t) = t \tanh\left(\frac{\pi}{2}\sinh(t)\right)\)</span>. The function <span class="math notranslate nohighlight">\(J_n(x)\)</span> is the Bessel function of the first kind and <span class="math notranslate nohighlight">\(n\)</span> is the order of the Bessel function. Here the function <span class="math notranslate nohighlight">\(f(x)\)</span> must be even with respect to the y-axis. <span class="math notranslate nohighlight">\(N\)</span> is the number of nodes used in the quadrature while <span class="math notranslate nohighlight">\(h\)</span> is the node spacing parameter. For further details on this quadrature formula, please see reference [54] in our paper.</p>
+<p>while</p>
+<div class="math notranslate nohighlight">
+\[\psi(t) = t \tanh\left(\frac{\pi}{2}\sinh(t)\right)\]</div>
+<p>and the function <span class="math notranslate nohighlight">\(J_n(x)\)</span> is the Bessel function of the first kind of order <span class="math notranslate nohighlight">\(n\)</span>. In this expression, <span class="math notranslate nohighlight">\(N\)</span> is the number of nodes used in the quadrature while <span class="math notranslate nohighlight">\(h\)</span> is the node spacing parameter. For further details on this quadrature formula, please see reference [54] in our paper.</p>
 <p>For TMD phenomenology, numerical Hankel transforms must be performed from from <span class="math notranslate nohighlight">\(b_\perp\)</span>-space to transverse momentum space, <span class="math notranslate nohighlight">\(q_\perp\)</span>-space. However, integrals of the form</p>
 <div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+W(q_\perp) &amp;= \int_0^{\infty} \frac{db_\perp}{2 \pi} b_\perp^{n+1} \widetilde{W}(b_\perp) J_n(b_\perp q_\perp) \\
+               &amp;= \frac{1}{q_\perp^{n+2}}\int_0^{\infty} \frac{dx}{2 \pi} x^{n+1} \widetilde{W}\left(\frac{x}{q_\perp}\right) J_n(x)
+\end{align}\end{split}\]</div>
+<p>tend to be huge bottlenecks of numerical computations. Note that to go from the first to the second line, we have made the substitution <span class="math notranslate nohighlight">\(x = b_\perp q_\perp\)</span> in order to match the form of the Ogata quadrature formula.</p>
+<p>In order to optimize the quadrature formula, we exploit the fact that the function <span class="math notranslate nohighlight">\(b_\perp^{n+1} \widetilde{W}(b_\perp)\)</span> is unimodal on the positive <span class="math notranslate nohighlight">\(b_\perp\)</span>-axis. Our integrator takes takes as input <span class="math notranslate nohighlight">\(\widetilde{W}(b_\perp)\)</span>, <span class="math notranslate nohighlight">\(q_\perp\)</span>, <span class="math notranslate nohighlight">\(N\)</span>, <span class="math notranslate nohighlight">\(n\)</span>, as well as <span class="math notranslate nohighlight">\(Q\)</span>, an initial guess for the inverse of the value of <span class="math notranslate nohighlight">\(b_\perp\)</span> at which the function <span class="math notranslate nohighlight">\(b_\perp^{n+1} \widetilde{W}(b_\perp)\)</span> is maximized. From this input, the algorithm uses Eq. (21) and Eq.(23) in our paper to find that value of <span class="math notranslate nohighlight">\(h\)</span> which optimizes the performance of the quadrature. The integrator outputs the numerical value</p>
+<div class="math notranslate nohighlight">
 \[\begin{align}
-W_\nu(q_\perp) = \int_0^{\infty} \frac{db_\perp}{2\pi} b_\perp^{\nu+1} \widetilde{W}(b_\perp) J_\nu(b_\perp q_\perp).
+\textrm{FBT}(n,\widetilde{W}\left(b_\perp\right),q_\perp,Q,N) \approx \frac{1}{2 q_\perp^{2n+2}} \sum_{j = 1}^{N} \omega_{n j} \left(\frac{\pi}{h}\psi(x_{n j})\right)^{2n+1} \widetilde{W}\left(\frac{1}{q_\perp}\frac{\pi}{h}\psi(x_{n j})\right) J_n\left(\frac{\pi}{h}\psi(x_{n j})\right) \psi'(x_{n j})\,.
 \end{align}\]</div>
-<p>tend to be huge bottlenecks of numerical computations.</p>
-<p>The algorithm that we present exploits the fact that for TMD applications, the function <span class="math notranslate nohighlight">\(b_\perp^{\nu+1} \widetilde{W}(b_\perp)\)</span> is a unimodal function. Our integrator takes takes as input <span class="math notranslate nohighlight">\(\widetilde{W}(b_\perp)\)</span>, <span class="math notranslate nohighlight">\(q_\perp\)</span>, <span class="math notranslate nohighlight">\(N\)</span>, as well as <span class="math notranslate nohighlight">\(Q\)</span>, a guess for the inverse of the value of <span class="math notranslate nohighlight">\(b_\perp\)</span> at which the function <span class="math notranslate nohighlight">\(b_\perp^{\nu+1} \widetilde{W}(b_\perp)\)</span> is maximized. From this function and these parameters, the algorithm uses Eq. (21) and Eq.(23) in our paper to find that value of <span class="math notranslate nohighlight">\(h\)</span> which optimizes the performance of the quadrature.</p>
+<p>It is important to note when using the integrator, the factor of <span class="math notranslate nohighlight">\(\frac{1}{2\pi}\)</span> is included in the numerical output and that the function which is passes to <span class="math notranslate nohighlight">\(\textrm{FBT}\)</span> is <span class="math notranslate nohighlight">\(b_\perp\)</span> dependent.</p>
 </div>
 
 
