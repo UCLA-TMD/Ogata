@@ -157,7 +157,7 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>The algorithm in this repository optimizes Ogata’s quadrature formula for TMD phenomenology. The work in this repository is based on the Ogata quadrature formula which is given by the expression</p>
+<p>The algorithm in this repository optimizes Ogata’s quadrature formula for TMD phenomenology. This work is based on the Ogata quadrature formula, which is given by the expression</p>
 <div class="math notranslate nohighlight">
 \[\begin{align}
 \int_{0}^{\infty} dx f(x) J_n(x) \approx \pi \sum_{j = 1}^{N} \omega_{n j}  f\left(\frac{\pi}{h}\psi(x_{n j})\right) J_n\left(\frac{\pi}{h}\psi(x_{n j})\right) \psi'(x_{n j})\,.
@@ -174,8 +174,8 @@ J_n(\pi \xi_{n j}) = 0\;
 <p>while</p>
 <div class="math notranslate nohighlight">
 \[\psi(t) = t \tanh\left(\frac{\pi}{2}\sinh(t)\right)\]</div>
-<p>and the function <span class="math notranslate nohighlight">\(J_n(x)\)</span> is the Bessel function of the first kind of order <span class="math notranslate nohighlight">\(n\)</span>. In this expression, <span class="math notranslate nohighlight">\(N\)</span> is the number of nodes used in the quadrature while <span class="math notranslate nohighlight">\(h\)</span> is the node spacing parameter. For further details on this quadrature formula, please see reference [54] in our paper.</p>
-<p>For TMD phenomenology, numerical Hankel transforms must be performed from from <span class="math notranslate nohighlight">\(b_\perp\)</span>-space to transverse momentum space, <span class="math notranslate nohighlight">\(q_\perp\)</span>-space. However, integrals of the form</p>
+<p>and the function <span class="math notranslate nohighlight">\(J_n(x)\)</span> is the Bessel function of the first kind of order <span class="math notranslate nohighlight">\(n\)</span>. The quadrature has two parameters which control the numerical errors, <span class="math notranslate nohighlight">\(N\)</span>, the number of nodes used in the quadrature, and <span class="math notranslate nohighlight">\(h\)</span>, is the node spacing parameter. For further details on this quadrature formula, please see reference [54] in our paper.</p>
+<p>For TMD phenomenology, numerical Hankel transformations must be performed from <span class="math notranslate nohighlight">\(b_\perp\)</span>-space to transverse momentum space, <span class="math notranslate nohighlight">\(q_\perp\)</span>-space. However, integrals of the form</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 W(q_\perp) &amp;= \int_0^{\infty} \frac{db_\perp}{2 \pi} b_\perp^{n+1} \widetilde{W}(b_\perp) J_n(b_\perp q_\perp) \\

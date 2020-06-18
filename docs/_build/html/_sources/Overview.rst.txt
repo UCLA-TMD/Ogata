@@ -1,7 +1,7 @@
 Overview
 ========
 
-The algorithm in this repository optimizes Ogata's quadrature formula for TMD phenomenology. The work in this repository is based on the Ogata quadrature formula which is given by the expression
+The algorithm in this repository optimizes Ogata's quadrature formula for TMD phenomenology. This work is based on the Ogata quadrature formula, which is given by the expression
 
 .. math::
 
@@ -26,9 +26,9 @@ while
 .. math::
   \psi(t) = t \tanh\left(\frac{\pi}{2}\sinh(t)\right)
 
-and the function :math:`J_n(x)` is the Bessel function of the first kind of order :math:`n`. In this expression, :math:`N` is the number of nodes used in the quadrature while :math:`h` is the node spacing parameter. For further details on this quadrature formula, please see reference [54] in our paper.
+and the function :math:`J_n(x)` is the Bessel function of the first kind of order :math:`n`. The quadrature has two parameters which control the numerical errors, :math:`N`, the number of nodes used in the quadrature, and :math:`h`, is the node spacing parameter. For further details on this quadrature formula, please see reference [54] in our paper.
 
-For TMD phenomenology, numerical Hankel transforms must be performed from from :math:`b_\perp`-space to transverse momentum space, :math:`q_\perp`-space. However, integrals of the form
+For TMD phenomenology, numerical Hankel transformations must be performed from :math:`b_\perp`-space to transverse momentum space, :math:`q_\perp`-space. However, integrals of the form
 
 .. math::
 
