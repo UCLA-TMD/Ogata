@@ -28,9 +28,18 @@ void FBT::acknowledgement(){
     std::cout << "###############################################################################" << std::endl;
 };
 
+
+//citation
+void FBT::citation(){
+    std::cout << "###############################################################################" << std::endl;
+    std::cout << "#                     Thank you for using FBT!                                #" << std::endl;
+    std::cout << "# Please, cite Kang:2019ctl if any derivative of it is used for a publication #" << std::endl;
+    std::cout << "###############################################################################" << std::endl;
+};
 // Deconstructor
 FBT::~FBT(){
   //jn_zeros0.~vector<double>();
+  citation();
 };
 
 // Constructor
@@ -74,7 +83,13 @@ FBT::FBT(double _nu, int _option, int _N, double _Q){
   //Imports zeros of the Bessel function. Initializing this way speeds up calls
  for (size_t i = 0; i < maxN; i++) {
    //These routines compute the location of the s-th positive zero of the Bessel function J_\nu(x).
-   jn_zeros0.push_back (gsl_sf_bessel_zero_Jnu(this->nu, i+1));
+   jn_zeros0.push_back( gsl_sf_bessel_zero_Jnu(this->nu, i+1) );
+   zeros.push_back( jn_zeros0[i] );
+   xi.push_back( zeros[i]/M_PI );
+   Jp1.push_back( gsl_sf_bessel_Jn(nu+1.,M_PI*xi[i]) ); //The functions gsl_sf_bessel_Jn and gsl_sf_bessel_Yn return the result of the Bessel functions of the first and second kinds respectively
+   w.push_back( gsl_sf_bessel_Yn(nu,M_PI*xi[i])/Jp1[i] );
+   
+   
  }
 
   acknowledgement();
@@ -100,62 +115,35 @@ double FBT::ogatat(std::function<double (double) > f, double q, double h){
   double nu = this->nu;
   int N = this->N;
 
-  std::vector<double> zeros;
-  zeros.resize(N); // Allocate N elements and copy from jn_zeros
-
-  std::vector<double> xi;
-  xi.resize(N);
-
-
-  std::vector<double> Jp1;
-  Jp1.resize(N);
-
-  std::vector<double> w;
-  w.resize(N);
-
-  std::vector<double> knots;
-  knots.resize(N);
-
-  std::vector<double> Jnu;
-  Jnu.resize(N);
-
-  std::vector<double> psip;
-  psip.resize(N);
-
-
-  std::vector<double> F;
-  F.resize(N);
-
+  double knots, Jnu, psip, F;
+  
   double val = 0;
 
-  try{
+  //try{
     for (size_t i = 0; i < (unsigned)N; i++) {
-      zeros[i] = jn_zeros0[i];
-      xi[i] = zeros[i]/M_PI;
-      Jp1[i] = gsl_sf_bessel_Jn(nu+1.,M_PI*xi[i]); //The functions gsl_sf_bessel_Jn and gsl_sf_bessel_Yn return the result of the Bessel functions of the first and second kinds respectively
-      w[i] = gsl_sf_bessel_Yn(nu,M_PI*xi[i])/Jp1[i];
-      knots[i] = M_PI/h*get_psi( h*xi[i] );
-      Jnu[i] = gsl_sf_bessel_Jn(nu,knots[i]);
       double temp =  get_psip( h*xi[i] );
 
       if( isnan(temp) )
       {
-        psip[i] = 1.;
+        psip = 1.;
       }
       else
       {
-        psip[i] = temp;
+        psip = temp;
       };
-      F[i] = f_for_ogata(knots[i], f, q);
-      val += M_PI*w[i]*F[i]*Jnu[i]*psip[i];
+
+      knots = M_PI/h*get_psi( h*xi[i] );
+      Jnu = gsl_sf_bessel_Jn(nu,knots);     
+      F = f_for_ogata(knots, f, q);
+      val += M_PI*w[i]*F*Jnu*psip;
 
 
     }
-  }
-  catch (std::exception& ex)
-  {
-    std::cout << "Thrown exception " << ex.what() << std::endl;
-  }
+  //}
+  //catch (std::exception& ex)
+  //{
+  //  std::cout << "Thrown exception " << ex.what() << std::endl;
+  //}
 
   return val;
 };
@@ -165,42 +153,22 @@ double FBT::ogatau(std::function<double (double) > f, double q, double h){
   double nu = this->nu;
   int N = this->N;
 
-  std::vector<double> zeros;
-  zeros.resize(N); // Allocate N elements and copy from jn_zeros
-
-  std::vector<double> xi;
-  xi.resize(N);
-
-  std::vector<double> Jp1;
-  Jp1.resize(N);
-
-  std::vector<double> w;
-  w.resize(N);
-
-  std::vector<double> knots;
-  knots.resize(N);
-
-  std::vector<double> F;
-  F.resize(N);
+  double knots, F;
 
   double val = 0;
 
-  try
-  {
+  //try
+  //{
     for (size_t i = 0; i < (unsigned)N; i++) {
-      zeros[i] = jn_zeros0[i];
-      xi[i] = zeros[i]/M_PI;
-      Jp1[i]=gsl_sf_bessel_Jn(nu+1,M_PI*xi[i]);
-      w[i]=gsl_sf_bessel_Yn(nu,M_PI*xi[i])/Jp1[i];
-      knots[i] = xi[i]*h;
-      F[i]=f_for_ogata(knots[i], f, q)*gsl_sf_bessel_Jn(nu,knots[i]);
-      val+=h*w[i]*F[i];
+      knots = xi[i]*h;
+      F=f_for_ogata(knots, f, q)*gsl_sf_bessel_Jn(nu,knots);
+      val+=h*w[i]*F;
     }
-  }
-  catch(std::exception& ex)
-  {
-    std::cout << "Thrown exception " << ex.what() << std::endl;
-  }
+  //}
+  //catch(std::exception& ex)
+  //{
+  //  std::cout << "Thrown exception " << ex.what() << std::endl;
+  //}
 
   return val;
 };

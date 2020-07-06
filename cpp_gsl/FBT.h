@@ -19,8 +19,19 @@ private:
   const static int N_def = 10;
   const static int option_def = 0; // 0 - modified Ogata (default)
   constexpr static double Q_def = 1.; // a rough estimate where the maximum of the function f(x) is
+  /// These are vectors needed in Ogata, will be initialized in the constructor
   std::vector<double> jn_zeros0;
+  std::vector<double> zeros;
+  std::vector<double> xi;
+  std::vector<double> Jp1;
+  std::vector<double> w;
+  
+  
+
+
+
   void acknowledgement();
+  void citation();
   double get_ht(double hu);
 
   double ogatat(std::function<double (double) > f, double q, double h);
@@ -31,6 +42,9 @@ public:
   FBT(double _nu = nu_def, int option = option_def, int _N = N_def, double _Q = Q_def); // Constructor
   ~FBT(); // Deconstructor
 
+  /// Initialize all needed vectors
+  void init(std::function<double (double) > g); 
+  /// Perform fast fourier
   double fbt(std::function<double (double) > g,  double q);  // modified Ogata
 
 };

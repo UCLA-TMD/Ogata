@@ -20,43 +20,56 @@ class FBT:
     def __init__(self,nu=0.0):
         """ Constructor, sets nu of Jnu()                          """
         self.nu = nu
-        """Sets maximum number of nodes to about 2^15."""
-        self.maxN = 32769
-        """Imports zeros of the Bessel function. Initializing this way speeds up calls"""
-        self.jn_zeros0 = jn_zeros(nu,self.maxN)
+        self.setup()
+        
+    def setup(self,N = 100):
+        self.jn_zeros0 = jn_zeros(self.nu,N)
+        self.xi = self.jn_zeros0/np.pi
+        Jp1=jv(self.nu+1,np.pi*self.xi)
+        self.w=yv(self.nu, np.pi * self.xi) / Jp1
+        
+    def get_psi(self, t):
+        return t*np.tanh(np.pi/2*np.sinh(t))
+     
+    def get_psip(self, t):
+        return np.pi*t*(-np.tanh(np.pi*np.sinh(t)/2)**2 + 1)*np.cosh(t)/2 + np.tanh(np.pi*np.sinh(t)/2)
 
     def _ogatat(self,f,h,N,nu):
         """Transformed Ogata quadrature sum. Equation 8 in the reference."""
         N = int(N)
-        zeros =  self.jn_zeros0[:N]
-        xi=zeros/np.pi
-        Jp1=jv(nu+1,np.pi*xi)
-        w=yv(nu, np.pi * xi) / Jp1
-        get_psi=lambda t: t*np.tanh(np.pi/2*np.sinh(t))
-        get_psip=lambda t:np.pi*t*(-np.tanh(np.pi*np.sinh(t)/2)**2 + 1)*np.cosh(t)/2 + np.tanh(np.pi*np.sinh(t)/2)
-        knots=np.pi/h*get_psi(h*xi)
+        if N > 100:
+           self.setup(N) 
+        #zeros =  self.jn_zeros0[:N]
+        #xi=zeros/np.pi
+        #Jp1=jv(nu+1,np.pi*xi)
+        #w=yv(nu, np.pi * xi) / Jp1
+        #get_psi=lambda t: t*np.tanh(np.pi/2*np.sinh(t))
+        #get_psip=lambda t:np.pi*t*(-np.tanh(np.pi*np.sinh(t)/2)**2 + 1)*np.cosh(t)/2 + np.tanh(np.pi*np.sinh(t)/2)
+        knots=np.pi/h*self.get_psi(h*self.xi[:N])
         Jnu=jv(nu,knots)
-        psip=get_psip(h*xi)
+        psip=self.get_psip(h*self.xi[:N])
         F=f(knots)
         psip[np.isnan(psip)]=1.0
-        val=0.5*np.sum(w*F*Jnu*psip)
+        val=0.5*np.sum(self.w[:N]*F*Jnu*psip)
         return val
 
     def _ogatau(self,f,h,N,nu):
         """Untransformed Ogata quadrature sum. Equation 7 in the reference."""
-        zeros=self.jn_zeros0[:N]
-        xi=zeros/np.pi
-        Jp1=jv(nu+1,np.pi*xi)
-        w=yv(nu, np.pi * xi) / Jp1
-        knots = xi*h
+        if N > 100:
+           self.setup(N)
+        #zeros=self.jn_zeros0[:N]
+        #xi=zeros/np.pi
+        #Jp1=jv(nu+1,np.pi*xi)
+        #w=yv(nu, np.pi * xi) / Jp1
+        knots = self.xi[:N]*h
         g=lambda x: f(x)*jv(nu,x)
         F=g(knots)
-        val=h*np.sum(w*F)/2./np.pi
+        val=h*np.sum(self.w[:N]*F)/2./np.pi
         return val#,h*w*F
 
     def _get_hu(self,f,q,Q):
         """Determines the untransformed hu by maximizing contribution to first node. Equation 11 in ref."""
-        zero1 = self.jn_zeros0[0]
+        zero1 = np.pi*self.jn_zeros0[0]
         h = lambda x: -abs(x*f(x/q))
         """Use brent method to maximize."""
         hu = minimize_scalar(h, bracket=None, bounds=(Q/10,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1*np.pi
