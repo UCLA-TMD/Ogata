@@ -36,9 +36,7 @@ private:
 public:
   FBT(double _nu = nu_def, int option = option_def, int _N = N_def, double _Q = Q_def); // Constructor
   ~FBT(); // Deconstructor
-  
-  /// Initialize all needed vectors
-  void init(std::function<double (double) > g); 
+
   /// Perform fast fourier
   double fbt(std::function<double (double) > g,  double q);  // modified Ogata
 

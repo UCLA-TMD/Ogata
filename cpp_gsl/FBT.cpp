@@ -33,7 +33,7 @@ void FBT::acknowledgement(){
 void FBT::citation(){
     std::cout << "###############################################################################" << std::endl;
     std::cout << "#                     Thank you for using FBT!                                #" << std::endl;
-    std::cout << "# Please, cite Kang:2019ctl if any derivative of it is used for a publication #" << std::endl;
+    std::cout << "# Please, cite Kang:2019ctl if used for a publication                         #" << std::endl;
     std::cout << "###############################################################################" << std::endl;
 };
 // Deconstructor
