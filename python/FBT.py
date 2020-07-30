@@ -96,7 +96,6 @@ class FBT:
         if option == 0:   # Transformed Ogata optimized h
             hu = self._get_hu(g,q,Q)
             ht = self._get_ht(hu,N)
-            print(q,ht)
             result = self._ogatat(f,ht,N,nu)
         elif option == 1: # Untransformed Ogata optimized h
             hu = self._get_hu(g,q,Q)
