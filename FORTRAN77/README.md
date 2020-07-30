@@ -6,4 +6,5 @@ make
 ./example.out
 python plot.py
 
-
+Author:
+John Terry, johndterry@physics.ucla.edu
