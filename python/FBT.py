@@ -38,13 +38,7 @@ class FBT:
         """Transformed Ogata quadrature sum. Equation 8 in the reference."""
         N = int(N)
         if N > 100:
-           self.setup(N) 
-        #zeros =  self.jn_zeros0[:N]
-        #xi=zeros/np.pi
-        #Jp1=jv(nu+1,np.pi*xi)
-        #w=yv(nu, np.pi * xi) / Jp1
-        #get_psi=lambda t: t*np.tanh(np.pi/2*np.sinh(t))
-        #get_psip=lambda t:np.pi*t*(-np.tanh(np.pi*np.sinh(t)/2)**2 + 1)*np.cosh(t)/2 + np.tanh(np.pi*np.sinh(t)/2)
+           self.setup(N)
         knots=np.pi/h*self.get_psi(h*self.xi[:N])
         Jnu=jv(nu,knots)
         psip=self.get_psip(h*self.xi[:N])
@@ -57,19 +51,15 @@ class FBT:
         """Untransformed Ogata quadrature sum. Equation 7 in the reference."""
         if N > 100:
            self.setup(N)
-        #zeros=self.jn_zeros0[:N]
-        #xi=zeros/np.pi
-        #Jp1=jv(nu+1,np.pi*xi)
-        #w=yv(nu, np.pi * xi) / Jp1
         knots = self.xi[:N]*h
         g=lambda x: f(x)*jv(nu,x)
         F=g(knots)
         val=h*np.sum(self.w[:N]*F)/2./np.pi
-        return val#,h*w*F
+        return val
 
     def _get_hu(self,f,q,Q):
         """Determines the untransformed hu by maximizing contribution to first node. Equation 11 in ref."""
-        zero1 = np.pi*self.jn_zeros0[0]
+        zero1 = self.jn_zeros0[0]
         h = lambda x: -abs(x*f(x/q))
         """Use brent method to maximize."""
         hu = minimize_scalar(h, bracket=None, bounds=(Q/10,10*Q), args=(), method='brent', tol=0.01, options=None).x/zero1*np.pi
@@ -80,7 +70,6 @@ class FBT:
     def _get_ht(self,hu,N):
         """Determine transformed ht from untransformed hu. Equation 13 in ref."""
         zeroN = self.jn_zeros0[int(N-1)]
-        #ht = fsolve(lambda h: hu-np.pi*np.tanh(np.pi/2*np.sinh(h*zeroN/np.pi)),2*hu/np.pi/zeroN)[0]
         ht = np.pi/zeroN*np.arcsinh(2/np.pi*np.arctanh(hu/np.pi))
         return ht
 
@@ -107,6 +96,7 @@ class FBT:
         if option == 0:   # Transformed Ogata optimized h
             hu = self._get_hu(g,q,Q)
             ht = self._get_ht(hu,N)
+            print(q,ht)
             result = self._ogatat(f,ht,N,nu)
         elif option == 1: # Untransformed Ogata optimized h
             hu = self._get_hu(g,q,Q)
@@ -135,8 +125,3 @@ class FBT:
             W1 = self.fbt(g,q,N=  _N,Q=_Q,option=_option)
             W2 = self.fbt(g,q,N=2*_N,Q=_Q,option=_option)
         return _N
-
-#if __name__ == "__main__":
-#    f = lambda x: x*np.exp(-x)
-#    fbt = FBT(0)
-#    print (fbt.fbt(f,1.,20,1.))

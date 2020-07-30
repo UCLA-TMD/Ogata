@@ -11,7 +11,7 @@ test = lambda b: b*np.exp(-b)
 
 N=10
 Q=1.0 # inverse of where test(b) peaks in bt space
-q=np.linspace(0.01,1,1000)
+q=np.linspace(0.01,1,101)
 nu=0
 
 fbt = FBT(nu)
