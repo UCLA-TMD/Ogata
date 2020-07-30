@@ -13,3 +13,8 @@ Nobuo Sato (ODU)
 Alexei Prokudin (PSU)
 
 John Terry (UCLA)
+
+## Guide to repo
+
+The source code for a each supported programming language can be found in the directory with the correponding name.
+For C++ with GSL dependence, please see the cpp_gsl/ while for C++ with BOOST dependence, please see cpp/.
