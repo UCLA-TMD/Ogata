@@ -42,7 +42,10 @@ class FBT:
         knots=np.pi/h*self.get_psi(h*self.xi[:N])
         Jnu=jv(nu,knots)
         psip=self.get_psip(h*self.xi[:N])
-        F=f(knots)
+        # AP 5/3/23 This line does not when the functions does not accept a list as the argument
+        #F=f(knots)
+        # the solution:
+        F=[f(knot) for knot in knots]
         psip[np.isnan(psip)]=1.0
         val=0.5*np.sum(self.w[:N]*F*Jnu*psip)
         return val
@@ -53,7 +56,10 @@ class FBT:
            self.setup(N)
         knots = self.xi[:N]*h
         g=lambda x: f(x)*jv(nu,x)
-        F=g(knots)
+        # AP 5/3/23 This line does not when the functions does not accept a list as the argument
+        #F=g(knots)
+        # the solution:
+        F=[g(knot) for knot in knots]
         val=h*np.sum(self.w[:N]*F)/2./np.pi
         return val
 
